@@ -38,7 +38,8 @@ class CustomSwipeButton @JvmOverloads constructor(
     private var inactiveIcon: Drawable? = null
     private var activeBackground: Drawable? = null
     private var inactiveBackground: Drawable? = null
-    private var swipeButtonPadding: Int = 0
+    private var textPadding: Int = 0
+    private var textSize: Float = 0.0F
 
     init {
         LayoutInflater.from(context).inflate(R.layout.button_swipe, this, true)
@@ -116,8 +117,10 @@ class CustomSwipeButton @JvmOverloads constructor(
     fun setEnable(isEnable: Boolean) {
         if (isEnable) {
             setOnTouchListener(getButtonTouchListener())
+            setOnClickListener(getButtonClickListener())
         } else {
             setOnTouchListener(null)
+            setOnClickListener(null)
         }
         buttonSwipeView.isEnabled = isEnable
         buttonSwipeNewTv.isEnabled = isEnable
@@ -149,6 +152,29 @@ class CustomSwipeButton @JvmOverloads constructor(
             }
             return@OnTouchListener false
         }
+    }
+
+    private fun getButtonClickListener(): View.OnClickListener {
+        return OnClickListener {
+            animateClick()
+        }
+    }
+
+    private fun animateClick() {
+        if (this.active) {
+            animateActiveClick()
+        } else {
+            animateInactiveClick()
+        }
+    }
+
+    private fun animateActiveClick() {
+        val animatorSet = AnimatorSet()
+
+    }
+
+    private fun animateInactiveClick() {
+
     }
 
     private fun returnToStart() {
@@ -223,16 +249,18 @@ class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeView.background = activeBackground
         slidingButtonIv.setImageDrawable(activeIcon)
         buttonSwipeNewTv.text = activeText
+        buttonSwipeNewTv.textSize = textSize
         buttonSwipeNewTv.setTextColor(activeTextColor)
-        buttonSwipeNewTv.setPadding(0, 0, context.resources.getDimensionPixelSize(swipeButtonPadding), 0)
+        buttonSwipeNewTv.setPadding(0, 0, textPadding, 0)
     }
 
     private fun implementInActiveStyle() {
         buttonSwipeView.background = inactiveBackground
         slidingButtonIv.setImageDrawable(inactiveIcon)
         buttonSwipeNewTv.text = inactiveText
+        buttonSwipeNewTv.textSize = textSize
         buttonSwipeNewTv.setTextColor(inactiveTextColor)
-        buttonSwipeNewTv.setPadding(context.resources.getDimensionPixelSize(swipeButtonPadding), 0, 0, 0)
+        buttonSwipeNewTv.setPadding(textPadding, 0, 0, 0)
     }
 
     private fun onButtonMove(event: MotionEvent) {
@@ -312,11 +340,22 @@ class CustomSwipeButton @JvmOverloads constructor(
         activeBackground = ContextCompat.getDrawable(context, typedArray.getResourceId(R.styleable.CustomSwipeButton_activeBackground, R.drawable.shape_scrolling_view_active))
         inactiveBackground = ContextCompat.getDrawable(context, typedArray.getResourceId(R.styleable.CustomSwipeButton_inactiveBackground, R.drawable.shape_scrolling_view_inactive))
 
-        swipeButtonPadding = if (typedArray.getInt(R.styleable.CustomSwipeButton_swipeButtonPadding, 0) != 0) {
-            typedArray.getInt(R.styleable.CustomSwipeButton_swipeButtonPadding,
-                    typedArray.getInt(R.styleable.CustomSwipeButton_swipeButtonPadding, 0))
+        textPadding = if (typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textPadding, 0) != 0) {
+            typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textPadding, 0)
         } else {
-            R.dimen.default_padding
+            context.resources.getDimensionPixelSize(R.dimen.default_padding)
+        }
+
+        textPadding = if (typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textPadding, 0) != 0) {
+            typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textPadding, 0)
+        } else {
+            context.resources.getDimensionPixelSize(R.dimen.default_padding)
+        }
+
+        textSize = if (typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textSize, 0) != 0) {
+            typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textSize, 0).toFloat()
+        } else {
+            context.resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
         }
 
         typedArray.recycle()
