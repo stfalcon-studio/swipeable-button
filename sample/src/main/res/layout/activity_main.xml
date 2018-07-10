@@ -15,7 +15,9 @@
         app:swipeProgressToFinish="0.3"
         app:swipeProgressToStart="0.3"
         app:activeIcon="@drawable/ic_android_black"
-        app:inactiveIcon="@drawable/ic_cloud_black"/>
+        app:inactiveIcon="@drawable/ic_cloud_black"
+        app:textPadding="56dp"
+        app:textSize="18sp"/>
 
     <com.stfalcon.customswipebutton.CustomSwipeButton
         android:id="@+id/customSwipeButton2"
@@ -31,6 +33,8 @@
         app:inactiveIcon="@drawable/ic_cloud_black"
         app:activeBackground="@drawable/shape_sample_scrolling_view_active"
         app:inactiveBackground="@drawable/shape_sample_scrolling_view_inactive"
+        app:textPadding="@dimen/custom_padding"
+        app:textSize="@dimen/custom_text_size"
         app:layout_constraintTop_toBottomOf="@+id/customSwipeButton"/>
 
     <com.stfalcon.customswipebutton.CustomSwipeButton

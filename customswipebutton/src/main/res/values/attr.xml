@@ -13,6 +13,7 @@
         <attr name="inactiveIcon" format="reference" />
         <attr name="activeBackground" format="reference" />
         <attr name="inactiveBackground" format="reference" />
-        <attr name="swipeButtonPadding" format="float|dimension" />
+        <attr name="textPadding" format="float|dimension" />
+        <attr name="textSize" format="float|dimension" />
     </declare-styleable>
 </resources>
