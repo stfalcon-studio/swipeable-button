@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CustomSwipeButton</string>
+    <string name="activate_text">Swipe to deactivate</string>
+    <string name="inactivate_text">Swipe to activate</string>
+</resources>

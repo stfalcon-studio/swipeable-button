@@ -1,0 +1,50 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.stfalcon.customswipebutton.CustomSwipeButton
+        android:id="@+id/customSwipeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:isClickToSwipeEnable="false"
+        app:activeText="active"
+        app:inactiveText="inactive"
+        app:swipeProgressToFinish="0.3"
+        app:swipeProgressToStart="0.3"
+        app:activeIcon="@drawable/ic_android_black"
+        app:inactiveIcon="@drawable/ic_cloud_black"/>
+
+    <com.stfalcon.customswipebutton.CustomSwipeButton
+        android:id="@+id/customSwipeButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:isClickToSwipeEnable="false"
+        app:activeText="@string/active"
+        app:inactiveText="@string/inactive"
+        app:swipeProgressToFinish="0.3"
+        app:swipeProgressToStart="0.3"
+        app:activeIcon="@drawable/ic_android_black"
+        app:inactiveIcon="@drawable/ic_cloud_black"
+        app:activeBackground="@drawable/shape_sample_scrolling_view_active"
+        app:inactiveBackground="@drawable/shape_sample_scrolling_view_inactive"
+        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton"/>
+
+    <com.stfalcon.customswipebutton.CustomSwipeButton
+        android:id="@+id/customSwipeButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton2"/>
+
+    <com.stfalcon.customswipebutton.CustomSwipeButton
+        android:id="@+id/customSwipeButton4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton3"/>
+
+</android.support.constraint.ConstraintLayout>

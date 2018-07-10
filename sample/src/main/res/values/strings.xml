@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SwipeButton</string>
+    <string name="active">Active</string>
+    <string name="inactive">Inactive</string>
+</resources>
