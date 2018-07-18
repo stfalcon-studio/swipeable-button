@@ -1,8 +1,8 @@
 package com.stfalcon.swipebutton
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -40,8 +40,18 @@ class MainActivity : AppCompatActivity() {
         customSwipeButton4.setEnable(true)
         customSwipeButton4.setActiveText("Active text")
         customSwipeButton4.setInActiveText("InActive text")
-        customSwipeButton4.setActiveTextColor(ContextCompat.getColor(this, android.R.color.holo_blue_bright))
-        customSwipeButton4.setInActiveTextColor(ContextCompat.getColor(this, android.R.color.holo_purple))
+        customSwipeButton4.setActiveTextColor(
+            ContextCompat.getColor(
+                this,
+                android.R.color.holo_blue_bright
+            )
+        )
+        customSwipeButton4.setInActiveTextColor(
+            ContextCompat.getColor(
+                this,
+                android.R.color.holo_purple
+            )
+        )
         ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_active)?.let {
             customSwipeButton4.setActiveBackground(it)
         }
