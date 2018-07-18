@@ -11,22 +11,21 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.View.OnTouchListener
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.button_swipe.view.*
 
 class CustomSwipeButton @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
-    private var initialX: Float = 0.toFloat()
-    private var active: Boolean = false
+    private var isActive: Boolean = false
     private var onSwipedListener: (() -> Unit)? = null
     private var onSwipedOnListener: (() -> Unit)? = null
     private var onSwipedOffListener: (() -> Unit)? = null
 
-    private var isActive = true
     private var isClickToSwipeEnable = true
     private var swipeProgressToFinish = 0.5
     private var swipeProgressToStart = 0.5
@@ -50,8 +49,8 @@ class CustomSwipeButton @JvmOverloads constructor(
     }
 
     fun setActive(isActive: Boolean) {
-        if (this.active != isActive) {
-            this.active = isActive
+        if (this.isActive != isActive) {
+            this.isActive = isActive
 
             implementStyle()
         }
@@ -116,11 +115,13 @@ class CustomSwipeButton @JvmOverloads constructor(
 
     fun setEnable(isEnable: Boolean) {
         if (isEnable) {
-            setOnTouchListener(getButtonTouchListener())
-            setOnClickListener(getButtonClickListener())
+            slidingButtonIv.setOnClickListener(getButtonClickListener())
+            slidingButtonIv.setOnTouchListener(getButtonTouchListener())
+            buttonSwipeView.setOnClickListener(getButtonClickListener())
         } else {
-            setOnTouchListener(null)
-            setOnClickListener(null)
+            slidingButtonIv.setOnClickListener(null)
+            slidingButtonIv.setOnTouchListener(null)
+            buttonSwipeView.setOnClickListener(null)
         }
         buttonSwipeView.isEnabled = isEnable
         buttonSwipeNewTv.isEnabled = isEnable
@@ -128,7 +129,7 @@ class CustomSwipeButton @JvmOverloads constructor(
     }
 
     private fun implementStyle() {
-        if (this.active) {
+        if (this.isActive) {
             returnToEnd()
             implementActiveStyle()
         } else {
@@ -161,20 +162,35 @@ class CustomSwipeButton @JvmOverloads constructor(
     }
 
     private fun animateClick() {
-        if (this.active) {
-            animateActiveClick()
-        } else {
-            animateInactiveClick()
+        if (isClickToSwipeEnable) {
+            if (this.isActive) {
+                animateActiveClick()
+            } else {
+                animateInactiveClick()
+            }
         }
     }
 
     private fun animateActiveClick() {
         val animatorSet = AnimatorSet()
-
+        val positionAnimator =
+            ValueAnimator.ofFloat(slidingButtonIv.x, slidingButtonIv.x - 40, slidingButtonIv.x)
+        positionAnimator.addUpdateListener {
+            slidingButtonIv.x = positionAnimator.animatedValue as Float
+        }
+        animatorSet.play(positionAnimator)
+        animatorSet.start()
     }
 
     private fun animateInactiveClick() {
-
+        val animatorSet = AnimatorSet()
+        val positionAnimator =
+            ValueAnimator.ofFloat(slidingButtonIv.x, slidingButtonIv.x + 40, slidingButtonIv.x)
+        positionAnimator.addUpdateListener {
+            slidingButtonIv.x = positionAnimator.animatedValue as Float
+        }
+        animatorSet.play(positionAnimator)
+        animatorSet.start()
     }
 
     private fun returnToStart() {
@@ -190,7 +206,10 @@ class CustomSwipeButton @JvmOverloads constructor(
     private fun returnToEnd() {
         rootView.post {
             val animatorSet = AnimatorSet()
-            val positionAnimator = ValueAnimator.ofFloat(slidingButtonIv.x, (width - slidingButtonIv.width).toFloat())
+            val positionAnimator = ValueAnimator.ofFloat(
+                slidingButtonIv.x,
+                (buttonSwipeView.width - slidingButtonIv.width).toFloat()
+            )
             positionAnimator.addUpdateListener {
                 slidingButtonIv.x = positionAnimator.animatedValue as Float
             }
@@ -213,7 +232,7 @@ class CustomSwipeButton @JvmOverloads constructor(
 
                 onSwipedOffListener?.invoke()
                 onSwipedListener?.invoke()
-                active = false
+                isActive = false
             }
         })
 
@@ -224,7 +243,10 @@ class CustomSwipeButton @JvmOverloads constructor(
 
     private fun animateToEnd() {
         val animatorSet = AnimatorSet()
-        val positionAnimator = ValueAnimator.ofFloat(slidingButtonIv.x, (width - slidingButtonIv.width).toFloat())
+        val positionAnimator = ValueAnimator.ofFloat(
+            slidingButtonIv.x,
+            (buttonSwipeView.width - slidingButtonIv.width).toFloat()
+        )
         positionAnimator.addUpdateListener {
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
@@ -236,7 +258,7 @@ class CustomSwipeButton @JvmOverloads constructor(
 
                 onSwipedOnListener?.invoke()
                 onSwipedListener?.invoke()
-                active = true
+                isActive = true
             }
         })
 
@@ -245,53 +267,20 @@ class CustomSwipeButton @JvmOverloads constructor(
         animatorSet.start()
     }
 
-    private fun implementActiveStyle() {
-        buttonSwipeView.background = activeBackground
-        slidingButtonIv.setImageDrawable(activeIcon)
-        buttonSwipeNewTv.text = activeText
-        buttonSwipeNewTv.textSize = textSize
-        buttonSwipeNewTv.setTextColor(activeTextColor)
-        buttonSwipeNewTv.setPadding(0, 0, textPadding, 0)
-    }
-
-    private fun implementInActiveStyle() {
-        buttonSwipeView.background = inactiveBackground
-        slidingButtonIv.setImageDrawable(inactiveIcon)
-        buttonSwipeNewTv.text = inactiveText
-        buttonSwipeNewTv.textSize = textSize
-        buttonSwipeNewTv.setTextColor(inactiveTextColor)
-        buttonSwipeNewTv.setPadding(textPadding, 0, 0, 0)
-    }
-
     private fun onButtonMove(event: MotionEvent) {
-        initialX = slidingButtonIv.x
-
-        //set the center of the button in the position of the touch
-        if (event.x > initialX + slidingButtonIv.width / 2
-                && event.x + slidingButtonIv.width / 2 < width) {
-            slidingButtonIv.x = event.x - slidingButtonIv.width / 2
-        }
-        if (event.x - slidingButtonIv.width / 2 > buttonSwipeView.x
-                && slidingButtonIv.x > 0
-                && event.x + slidingButtonIv.width / 2 < width) {
-            slidingButtonIv.x = event.x - slidingButtonIv.width / 2
-        }
-
-        //set the moving part position to the limits
-        if (event.x + slidingButtonIv.width / 2 > width
-                && slidingButtonIv.x + slidingButtonIv.width / 2 < width) {
-            slidingButtonIv.x = (width - slidingButtonIv.width).toFloat()
-        }
-
-        //set the moving part position to the left border
-        if (event.x < slidingButtonIv.width / 2
-                && slidingButtonIv.x > 0) {
-            slidingButtonIv.x = 0.toFloat()
+        if (slidingButtonIv.x >= 0
+            && event.rawX + slidingButtonIv.width / 2 < width
+        ) {
+            if (slidingButtonIv.x + slidingButtonIv.width / 2 < event.x
+                || event.rawX - slidingButtonIv.width / 2 > buttonSwipeView.x
+            ) {
+                slidingButtonIv.x = event.rawX - slidingButtonIv.width / 2
+            }
         }
     }
 
     private fun onButtonMoved() {
-        if (active) {
+        if (isActive) {
             if (slidingButtonIv.x < buttonSwipeView.width * swipeProgressToStart) {
                 animateToStart()
             } else {
@@ -310,54 +299,133 @@ class CustomSwipeButton @JvmOverloads constructor(
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomSwipeButton)
 
         isActive = typedArray.getBoolean(R.styleable.CustomSwipeButton_isActive, false)
-        isClickToSwipeEnable = typedArray.getBoolean(R.styleable.CustomSwipeButton_isClickToSwipeEnable, true)
-        swipeProgressToFinish = typedArray.getFloat(R.styleable.CustomSwipeButton_swipeProgressToFinish, swipeProgressToFinish.toFloat()).toDouble()
-        swipeProgressToStart = 1 - typedArray.getFloat(R.styleable.CustomSwipeButton_swipeProgressToStart, swipeProgressToStart.toFloat()).toDouble()
+        isClickToSwipeEnable =
+                typedArray.getBoolean(R.styleable.CustomSwipeButton_isClickToSwipeEnable, true)
+        swipeProgressToFinish = typedArray.getFloat(
+            R.styleable.CustomSwipeButton_swipeProgressToFinish,
+            swipeProgressToFinish.toFloat()
+        ).toDouble()
+        swipeProgressToStart = 1 - typedArray.getFloat(
+            R.styleable.CustomSwipeButton_swipeProgressToStart,
+            swipeProgressToStart.toFloat()
+        ).toDouble()
 
         activeText = typedArray.getString(R.styleable.CustomSwipeButton_activeText)
-                ?: context.getString(typedArray.getResourceId(R.styleable.CustomSwipeButton_activeText, R.string.activate_text))
+                ?: context.getString(
+            typedArray.getResourceId(
+                R.styleable.CustomSwipeButton_activeText,
+                R.string.activate_text
+            )
+        )
 
         inactiveText = typedArray.getString(R.styleable.CustomSwipeButton_inactiveText)
-                ?: context.getString(typedArray.getResourceId(R.styleable.CustomSwipeButton_inactiveText, R.string.inactivate_text))
+                ?: context.getString(
+            typedArray.getResourceId(
+                R.styleable.CustomSwipeButton_inactiveText,
+                R.string.inactivate_text
+            )
+        )
 
-        activeTextColor = if (typedArray.getInt(R.styleable.CustomSwipeButton_activeTextColor, 0) != 0) {
-            typedArray.getInt(R.styleable.CustomSwipeButton_activeTextColor, 0)
-        } else {
-            ContextCompat.getColor(context, typedArray.getResourceId(R.styleable.CustomSwipeButton_activeTextColor, android.R.color.white))
-        }
+        activeTextColor =
+                if (typedArray.getInt(R.styleable.CustomSwipeButton_activeTextColor, 0) != 0) {
+                    typedArray.getInt(R.styleable.CustomSwipeButton_activeTextColor, 0)
+                } else {
+                    ContextCompat.getColor(
+                        context,
+                        typedArray.getResourceId(
+                            R.styleable.CustomSwipeButton_activeTextColor,
+                            android.R.color.white
+                        )
+                    )
+                }
 
-        inactiveTextColor = if (typedArray.getInt(R.styleable.CustomSwipeButton_inactiveTextColor, 0) != 0) {
-            typedArray.getInt(R.styleable.CustomSwipeButton_inactiveTextColor, 0)
-        } else {
-            ContextCompat.getColor(context, typedArray.getResourceId(R.styleable.CustomSwipeButton_inactiveTextColor, android.R.color.black))
-        }
+        inactiveTextColor =
+                if (typedArray.getInt(R.styleable.CustomSwipeButton_inactiveTextColor, 0) != 0) {
+                    typedArray.getInt(R.styleable.CustomSwipeButton_inactiveTextColor, 0)
+                } else {
+                    ContextCompat.getColor(
+                        context,
+                        typedArray.getResourceId(
+                            R.styleable.CustomSwipeButton_inactiveTextColor,
+                            android.R.color.black
+                        )
+                    )
+                }
 
         activeIcon = typedArray.getDrawable(R.styleable.CustomSwipeButton_activeIcon)
-                ?: ContextCompat.getDrawable(context,typedArray.getResourceId(R.styleable.CustomSwipeButton_activeIcon, R.drawable.ic_stop))
+                ?: ContextCompat.getDrawable(
+            context,
+            typedArray.getResourceId(R.styleable.CustomSwipeButton_activeIcon, R.drawable.ic_stop)
+        )
         inactiveIcon = typedArray.getDrawable(R.styleable.CustomSwipeButton_inactiveIcon)
-                ?: ContextCompat.getDrawable(context,typedArray.getResourceId(R.styleable.CustomSwipeButton_inactiveIcon, R.drawable.ic_play))
+                ?: ContextCompat.getDrawable(
+            context,
+            typedArray.getResourceId(R.styleable.CustomSwipeButton_inactiveIcon, R.drawable.ic_play)
+        )
 
-        activeBackground = ContextCompat.getDrawable(context, typedArray.getResourceId(R.styleable.CustomSwipeButton_activeBackground, R.drawable.shape_scrolling_view_active))
-        inactiveBackground = ContextCompat.getDrawable(context, typedArray.getResourceId(R.styleable.CustomSwipeButton_inactiveBackground, R.drawable.shape_scrolling_view_inactive))
+        activeBackground = ContextCompat.getDrawable(
+            context,
+            typedArray.getResourceId(
+                R.styleable.CustomSwipeButton_activeBackground,
+                R.drawable.shape_scrolling_view_active
+            )
+        )
+        inactiveBackground = ContextCompat.getDrawable(
+            context,
+            typedArray.getResourceId(
+                R.styleable.CustomSwipeButton_inactiveBackground,
+                R.drawable.shape_scrolling_view_inactive
+            )
+        )
 
-        textPadding = if (typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textPadding, 0) != 0) {
+        textPadding = if (typedArray.getDimensionPixelSize(
+                R.styleable.CustomSwipeButton_textPadding,
+                0
+            ) != 0
+        ) {
             typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textPadding, 0)
         } else {
             context.resources.getDimensionPixelSize(R.dimen.default_padding)
         }
 
-        textPadding = if (typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textPadding, 0) != 0) {
+        textPadding = if (typedArray.getDimensionPixelSize(
+                R.styleable.CustomSwipeButton_textPadding,
+                0
+            ) != 0
+        ) {
             typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textPadding, 0)
         } else {
             context.resources.getDimensionPixelSize(R.dimen.default_padding)
         }
 
-        textSize = if (typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textSize, 0) != 0) {
+        textSize = if (typedArray.getDimensionPixelSize(
+                R.styleable.CustomSwipeButton_textSize,
+                0
+            ) != 0
+        ) {
             typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textSize, 0).toFloat()
         } else {
             context.resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
         }
 
         typedArray.recycle()
+    }
+
+    private fun implementActiveStyle() {
+        buttonSwipeView.background = activeBackground
+        slidingButtonIv.setImageDrawable(activeIcon)
+        buttonSwipeNewTv.text = activeText
+        buttonSwipeNewTv.textSize = textSize
+        buttonSwipeNewTv.setTextColor(activeTextColor)
+        buttonSwipeNewTv.setPadding(0, 0, textPadding, 0)
+    }
+
+    private fun implementInActiveStyle() {
+        buttonSwipeView.background = inactiveBackground
+        slidingButtonIv.setImageDrawable(inactiveIcon)
+        buttonSwipeNewTv.text = inactiveText
+        buttonSwipeNewTv.textSize = textSize
+        buttonSwipeNewTv.setTextColor(inactiveTextColor)
+        buttonSwipeNewTv.setPadding(textPadding, 0, 0, 0)
     }
 }
