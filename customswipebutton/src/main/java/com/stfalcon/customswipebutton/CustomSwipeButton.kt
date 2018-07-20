@@ -95,22 +95,22 @@ class CustomSwipeButton @JvmOverloads constructor(
         implementStyle()
     }
 
-    fun setActiveIcon(activeIcon: Drawable) {
+    fun setActiveIcon(activeIcon: Drawable?) {
         this.activeIcon = activeIcon
         implementStyle()
     }
 
-    fun setInActiveIcon(inactiveIcon: Drawable) {
+    fun setInActiveIcon(inactiveIcon: Drawable?) {
         this.inactiveIcon = inactiveIcon
         implementStyle()
     }
 
-    fun setActiveBackground(activeBackground: Drawable) {
+    fun setActiveBackground(activeBackground: Drawable?) {
         this.activeBackground = activeBackground
         implementStyle()
     }
 
-    fun setInActiveBackground(inactiveBackground: Drawable) {
+    fun setInActiveBackground(inactiveBackground: Drawable?) {
         this.inactiveBackground = inactiveBackground
         implementStyle()
     }
@@ -197,7 +197,7 @@ class CustomSwipeButton @JvmOverloads constructor(
     }
 
     private fun getButtonTouchListener(): View.OnTouchListener {
-        return OnTouchListener { v, event ->
+        return OnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> return@OnTouchListener true
                 MotionEvent.ACTION_MOVE -> {
@@ -477,7 +477,7 @@ class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeNewTv.setPadding(textPadding, 0, 0, 0)
     }
 
-    class Builder constructor(val context: Context) {
+    class Builder constructor(private val context: Context) {
         private var onSwipedListener: (() -> Unit)? = null
         private var onSwipedOnListener: (() -> Unit)? = null
         private var onSwipedOffListener: (() -> Unit)? = null
@@ -536,38 +536,65 @@ class CustomSwipeButton @JvmOverloads constructor(
             return this
         }
 
-        fun setActiveIcon(activeIconDraw: Drawable?): Builder {
-            activeIcon = activeIconDraw
+        fun setActiveIcon(activeIconDrawable: Drawable?): Builder {
+            activeIcon = activeIconDrawable
             return this
         }
 
-        fun setInActiveIcon(inactiveIconDrawRes: Drawable?): Builder {
-            inactiveIcon = inactiveIconDrawRes
+        fun setInActiveIcon(inactiveIconDrawable: Drawable?): Builder {
+            inactiveIcon = inactiveIconDrawable
             return this
         }
 
-        fun setActiveBackground(activeBackgroundDraw: Drawable?): Builder {
-            activeBackground = activeBackgroundDraw
+        fun setActiveBackground(activeBackgroundDrawable: Drawable?): Builder {
+            activeBackground = activeBackgroundDrawable
             return this
         }
 
-        fun setInActiveBackground(inactiveBackgroundDraw: Drawable?): Builder {
-            inactiveBackground = inactiveBackgroundDraw
+        fun setInActiveBackground(inactiveBackgroundDrawable: Drawable?): Builder {
+            inactiveBackground = inactiveBackgroundDrawable
             return this
         }
 
-        /*
-         * Creates a [UniversalPickerDialog] with the arguments supplied to this builder. It does not
-         * [UniversalPickerDialog.show] the dialog. This allows the user to do any extra processing
-         * before displaying the dialog. Use [.show] if you don't have any other processing
-         * to do and want this to be created and displayed.
-         * */
+        fun setTextPadding(textPaddingData: Int): Builder {
+            textPadding = textPaddingData
+            return this
+        }
+
+        fun setTextSize(textSizeData: Float): Builder {
+            textSize = textSizeData
+            return this
+        }
+
+        fun setSwipeProgressToFinish(swipeProgressToFinishData: Double): Builder {
+            swipeProgressToFinish = swipeProgressToFinishData
+            return this
+        }
+
+        fun setSwipeProgressToStart(swipeProgressToFinishStart: Double): Builder {
+            swipeProgressToStart = swipeProgressToFinishStart
+            return this
+        }
 
         fun build(): CustomSwipeButton {
             val swipeButton = CustomSwipeButton(context = context)
             swipeButton.setActiveText(activeText)
             swipeButton.setInActiveText(inactiveText)
-            swipeButton.setIsClickToSwipeEnable(isClickToSwipeEnable)
+            swipeButton.setActiveTextColor(activeTextColor)
+            swipeButton.setInActiveTextColor(inactiveTextColor)
+            swipeButton.setActiveIcon(activeIcon)
+            swipeButton.setInActiveIcon(inactiveIcon)
+            swipeButton.setTextPadding(textPadding)
+            swipeButton.setTextSize(textSize)
+            swipeButton.setSwipeProgressToFinish(swipeProgressToFinish)
+            swipeButton.setSwipeProgressToStart(swipeProgressToStart)
+            swipeButton.setActiveBackground(activeBackground)
+            swipeButton.setInActiveBackground(inactiveBackground)
+            swipeButton.setOnSwipedListener { onSwipedListener?.invoke() }
+            swipeButton.setOnSwipedOnListener { onSwipedOnListener?.invoke() }
+            swipeButton.setOnSwipedOffListener { onSwipedOffListener?.invoke() }
+
+            swipeButton.setIsClickToSwipeEnable(true)
             return swipeButton
         }
     }

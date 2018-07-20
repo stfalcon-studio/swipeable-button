@@ -82,6 +82,10 @@ class MainActivity : AppCompatActivity() {
             .setActiveIcon(ContextCompat.getDrawable(this, R.drawable.ic_android_black))
             .setInActiveIcon(ContextCompat.getDrawable(this, R.drawable.ic_cloud_black))
             .setIsClickToSwipeEnable(true)
+            .setTextPadding(resources.getDimensionPixelSize(R.dimen.default_padding))
+            .setTextSize(resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat())
+            .setSwipeProgressToFinish(0.5)
+            .setSwipeProgressToStart(0.5)
             .setActiveBackground(
                 ContextCompat.getDrawable(
                     this,
