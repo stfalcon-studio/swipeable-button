@@ -44,6 +44,8 @@ class CustomSwipeButton @JvmOverloads constructor(
         LayoutInflater.from(context).inflate(R.layout.button_swipe, this, true)
         attrs?.let {
             parseAttr(it)
+        } ?: kotlin.run {
+            initVariables()
         }
         implementStyle()
     }
@@ -126,6 +128,62 @@ class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeView.isEnabled = isEnable
         buttonSwipeNewTv.isEnabled = isEnable
         slidingButtonIv.isEnabled = isEnable
+    }
+
+    fun setSwipeProgressToFinish(swipeProgressToFinish: Double) {
+        this.swipeProgressToFinish = swipeProgressToFinish
+    }
+
+    fun setSwipeProgressToStart(swipeProgressToStart: Double) {
+        this.swipeProgressToStart = swipeProgressToStart
+    }
+
+    fun setTextPadding(textPadding: Int) {
+        this.textPadding = textPadding
+    }
+
+    fun setTextSize(textSize: Float) {
+        this.textSize = textSize
+    }
+
+    private fun initVariables() {
+        isActive = false
+        isClickToSwipeEnable = true
+
+        activeText = context.getString(R.string.activate_text)
+        inactiveText = context.getString(R.string.inactivate_text)
+        activeTextColor = ContextCompat.getColor(
+            context,
+            android.R.color.white
+        )
+
+        inactiveTextColor = ContextCompat.getColor(
+            context,
+            android.R.color.black
+        )
+
+        activeIcon = ContextCompat.getDrawable(
+            context,
+            R.drawable.ic_stop
+        )
+
+        inactiveIcon = ContextCompat.getDrawable(
+            context,
+            R.drawable.ic_play
+        )
+
+        activeBackground = ContextCompat.getDrawable(
+            context,
+            R.drawable.shape_scrolling_view_active
+        )
+
+        inactiveBackground = ContextCompat.getDrawable(
+            context,
+            R.drawable.shape_scrolling_view_inactive
+        )
+        textPadding = context.resources.getDimensionPixelSize(R.dimen.default_padding)
+
+        textSize = context.resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
     }
 
     private fun implementStyle() {
@@ -388,16 +446,6 @@ class CustomSwipeButton @JvmOverloads constructor(
             context.resources.getDimensionPixelSize(R.dimen.default_padding)
         }
 
-        textPadding = if (typedArray.getDimensionPixelSize(
-                R.styleable.CustomSwipeButton_textPadding,
-                0
-            ) != 0
-        ) {
-            typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textPadding, 0)
-        } else {
-            context.resources.getDimensionPixelSize(R.dimen.default_padding)
-        }
-
         textSize = if (typedArray.getDimensionPixelSize(
                 R.styleable.CustomSwipeButton_textSize,
                 0
@@ -427,5 +475,100 @@ class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeNewTv.textSize = textSize
         buttonSwipeNewTv.setTextColor(inactiveTextColor)
         buttonSwipeNewTv.setPadding(textPadding, 0, 0, 0)
+    }
+
+    class Builder constructor(val context: Context) {
+        private var onSwipedListener: (() -> Unit)? = null
+        private var onSwipedOnListener: (() -> Unit)? = null
+        private var onSwipedOffListener: (() -> Unit)? = null
+
+        private var isClickToSwipeEnable = true
+        private var swipeProgressToFinish = 0.5
+        private var swipeProgressToStart = 0.5
+        private lateinit var activeText: String
+        private lateinit var inactiveText: String
+        private var activeTextColor: Int = 0
+        private var inactiveTextColor: Int = 0
+        private var activeIcon: Drawable? = null
+        private var inactiveIcon: Drawable? = null
+        private var activeBackground: Drawable? = null
+        private var inactiveBackground: Drawable? = null
+        private var textPadding: Int = 0
+        private var textSize: Float = 0.0F
+
+        fun setOnSwipedListener(onSwiped: (() -> Unit)): Builder {
+            onSwipedListener = onSwiped
+            return this
+        }
+
+        fun setOnSwipedOnListener(onSwiped: (() -> Unit)): Builder {
+            onSwipedOnListener = onSwiped
+            return this
+        }
+
+        fun setOnSwipedOffListener(onSwiped: (() -> Unit)): Builder {
+            onSwipedOffListener = onSwiped
+            return this
+        }
+
+        fun setIsClickToSwipeEnable(isEnable: Boolean): Builder {
+            isClickToSwipeEnable = isEnable
+            return this
+        }
+
+        fun setActiveText(activeTextMsg: String): Builder {
+            activeText = activeTextMsg
+            return this
+        }
+
+        fun setInActiveText(inactiveTextMsg: String): Builder {
+            inactiveText = inactiveTextMsg
+            return this
+        }
+
+        fun setActiveTextColor(activeTextColorRes: Int): Builder {
+            activeTextColor = activeTextColorRes
+            return this
+        }
+
+        fun setInActiveTextColor(inactiveTextColorRes: Int): Builder {
+            inactiveTextColor = inactiveTextColorRes
+            return this
+        }
+
+        fun setActiveIcon(activeIconDraw: Drawable?): Builder {
+            activeIcon = activeIconDraw
+            return this
+        }
+
+        fun setInActiveIcon(inactiveIconDrawRes: Drawable?): Builder {
+            inactiveIcon = inactiveIconDrawRes
+            return this
+        }
+
+        fun setActiveBackground(activeBackgroundDraw: Drawable?): Builder {
+            activeBackground = activeBackgroundDraw
+            return this
+        }
+
+        fun setInActiveBackground(inactiveBackgroundDraw: Drawable?): Builder {
+            inactiveBackground = inactiveBackgroundDraw
+            return this
+        }
+
+        /*
+         * Creates a [UniversalPickerDialog] with the arguments supplied to this builder. It does not
+         * [UniversalPickerDialog.show] the dialog. This allows the user to do any extra processing
+         * before displaying the dialog. Use [.show] if you don't have any other processing
+         * to do and want this to be created and displayed.
+         * */
+
+        fun build(): CustomSwipeButton {
+            val swipeButton = CustomSwipeButton(context = context)
+            swipeButton.setActiveText(activeText)
+            swipeButton.setInActiveText(inactiveText)
+            swipeButton.setIsClickToSwipeEnable(isClickToSwipeEnable)
+            return swipeButton
+        }
     }
 }

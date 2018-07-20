@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import com.stfalcon.customswipebutton.CustomSwipeButton
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         customSwipeButton3.setEnable(true)
 
         initComponent()
+        buildComponent()
         initListeners()
     }
 
@@ -40,6 +43,10 @@ class MainActivity : AppCompatActivity() {
         customSwipeButton4.setEnable(true)
         customSwipeButton4.setActiveText("Active text")
         customSwipeButton4.setInActiveText("InActive text")
+        customSwipeButton4.setTextPadding(16)
+        customSwipeButton4.setTextSize(8f)
+        customSwipeButton4.setSwipeProgressToFinish(0.1)
+        customSwipeButton4.setSwipeProgressToStart(0.9)
         customSwipeButton4.setActiveTextColor(
             ContextCompat.getColor(
                 this,
@@ -64,5 +71,36 @@ class MainActivity : AppCompatActivity() {
         ContextCompat.getDrawable(this, R.drawable.ic_cloud_black)?.let {
             customSwipeButton4.setInActiveIcon(it)
         }
+    }
+
+    private fun buildComponent() {
+        val customSwipeButtonBuild = CustomSwipeButton.Builder(this)
+            .setActiveText("Active Builder")
+            .setInActiveText("Inactive builder")
+            .setActiveTextColor(android.R.color.holo_green_light)
+            .setInActiveTextColor(android.R.color.holo_blue_bright)
+            .setActiveIcon(ContextCompat.getDrawable(this, R.drawable.ic_android_black))
+            .setInActiveIcon(ContextCompat.getDrawable(this, R.drawable.ic_cloud_black))
+            .setIsClickToSwipeEnable(true)
+            .setActiveBackground(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.shape_sample_scrolling_view_active
+                )
+            )
+            .setInActiveBackground(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.shape_sample_scrolling_view_inactive
+                )
+            )
+            .setOnSwipedListener { Log.d(TAG, "onSwiped") }
+            .setOnSwipedOnListener { Log.d(TAG, "onSwipedOn") }
+            .setOnSwipedOffListener { Log.d(TAG, "onSwipedOff") }
+            .build()
+
+        customSwipeButtonBuild.setEnable(true)
+
+        mainContainer.addView(customSwipeButtonBuild)
     }
 }
