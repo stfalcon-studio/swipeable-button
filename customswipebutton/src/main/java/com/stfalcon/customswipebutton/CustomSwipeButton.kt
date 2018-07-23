@@ -21,24 +21,24 @@ class CustomSwipeButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
-    private var isActive: Boolean = false
+    private var isActive: Boolean = false //FIXME переробити в пропертю
     private var onSwipedListener: (() -> Unit)? = null
     private var onSwipedOnListener: (() -> Unit)? = null
     private var onSwipedOffListener: (() -> Unit)? = null
 
-    private var isClickToSwipeEnable = true
-    private var swipeProgressToFinish = 0.5
-    private var swipeProgressToStart = 0.5
-    private lateinit var activeText: String
-    private lateinit var inactiveText: String
-    private var activeTextColor: Int = 0
-    private var inactiveTextColor: Int = 0
-    private var activeIcon: Drawable? = null
-    private var inactiveIcon: Drawable? = null
-    private var activeBackground: Drawable? = null
-    private var inactiveBackground: Drawable? = null
-    private var textPadding: Int = 0
-    private var textSize: Float = 0.0F
+    private var isClickToSwipeEnable = true//FIXME переробити в пропертю
+    private var swipeProgressToFinish = 0.5//FIXME переробити в пропертю
+    private var swipeProgressToStart = 0.5//FIXME переробити в пропертю
+    private lateinit var activeText: String//FIXME переробити в пропертю
+    private lateinit var inactiveText: String//FIXME переробити в пропертю
+    private var activeTextColor: Int = 0//FIXME переробити в пропертю
+    private var inactiveTextColor: Int = 0//FIXME переробити в пропертю
+    private var activeIcon: Drawable? = null//FIXME переробити в пропертю
+    private var inactiveIcon: Drawable? = null//FIXME переробити в пропертю
+    private var activeBackground: Drawable? = null//FIXME переробити в пропертю
+    private var inactiveBackground: Drawable? = null//FIXME переробити в пропертю
+    private var textPadding: Int = 0//FIXME переробити в пропертю
+    private var textSize: Float = 0.0F//FIXME переробити в пропертю
 
     init {
         LayoutInflater.from(context).inflate(R.layout.button_swipe, this, true)
@@ -50,6 +50,7 @@ class CustomSwipeButton @JvmOverloads constructor(
         implementStyle()
     }
 
+    //FIXME переробити в пропертю
     fun setActive(isActive: Boolean) {
         if (this.isActive != isActive) {
             this.isActive = isActive
@@ -58,63 +59,72 @@ class CustomSwipeButton @JvmOverloads constructor(
         }
     }
 
+    //FIXME цей метод не потрібен. Зробити філду паблік
     fun setOnSwipedListener(onSwiped: (() -> Unit)) {
         this.onSwipedListener = onSwiped
     }
-
+    //FIXME цей метод не потрібен. Зробити філду паблік
     fun setOnSwipedOnListener(onSwiped: (() -> Unit)) {
         this.onSwipedOnListener = onSwiped
     }
-
+    //FIXME цей метод не потрібен. Зробити філду паблік
     fun setOnSwipedOffListener(onSwiped: (() -> Unit)) {
         this.onSwipedOffListener = onSwiped
     }
-
+    //FIXME переробити в пропертю
     fun setIsClickToSwipeEnable(isEnable: Boolean) {
         this.isClickToSwipeEnable = isEnable
         implementStyle()
     }
-
+    //FIXME переробити в пропертю
     fun setActiveText(activeText: String) {
         this.activeText = activeText
         implementStyle()
     }
-
+    //FIXME переробити в пропертю
     fun setInActiveText(inactiveText: String) {
         this.inactiveText = inactiveText
         implementStyle()
     }
 
+    //FIXME переробити в пропертю
     fun setActiveTextColor(activeTextColor: Int) {
         this.activeTextColor = activeTextColor
         implementStyle()
     }
 
+    //FIXME переробити в пропертю
     fun setInActiveTextColor(inactiveTextColor: Int) {
         this.inactiveTextColor = inactiveTextColor
         implementStyle()
     }
 
+    //FIXME переробити в пропертю
     fun setActiveIcon(activeIcon: Drawable?) {
         this.activeIcon = activeIcon
         implementStyle()
     }
 
+    //FIXME переробити в пропертю
     fun setInActiveIcon(inactiveIcon: Drawable?) {
         this.inactiveIcon = inactiveIcon
         implementStyle()
     }
 
+    //FIXME переробити в пропертю
     fun setActiveBackground(activeBackground: Drawable?) {
         this.activeBackground = activeBackground
         implementStyle()
     }
 
+    //FIXME переробити в пропертю
     fun setInActiveBackground(inactiveBackground: Drawable?) {
         this.inactiveBackground = inactiveBackground
         implementStyle()
     }
 
+    //FIXME по дефолту isEnable має бути true. Потрібно зберігати значення isEnable. Додати метод isEnable
+    //FIXME або краще по можливості переробити на проперю
     fun setEnable(isEnable: Boolean) {
         if (isEnable) {
             slidingButtonIv.setOnClickListener(getButtonClickListener())
@@ -129,23 +139,24 @@ class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeNewTv.isEnabled = isEnable
         slidingButtonIv.isEnabled = isEnable
     }
-
+    //FIXME переробити в пропертю
     fun setSwipeProgressToFinish(swipeProgressToFinish: Double) {
         this.swipeProgressToFinish = swipeProgressToFinish
     }
-
+    //FIXME переробити в пропертю
     fun setSwipeProgressToStart(swipeProgressToStart: Double) {
         this.swipeProgressToStart = swipeProgressToStart
     }
-
+    //FIXME переробити в пропертю
     fun setTextPadding(textPadding: Int) {
         this.textPadding = textPadding
     }
-
+    //FIXME переробити в пропертю
     fun setTextSize(textSize: Float) {
         this.textSize = textSize
     }
 
+    //FIXME переробити в пропертю
     private fun initVariables() {
         isActive = false
         isClickToSwipeEnable = true
@@ -186,6 +197,7 @@ class CustomSwipeButton @JvmOverloads constructor(
         textSize = context.resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
     }
 
+    //FIXME implement не підходяща назва
     private fun implementStyle() {
         if (this.isActive) {
             returnToEnd()
@@ -196,6 +208,7 @@ class CustomSwipeButton @JvmOverloads constructor(
         }
     }
 
+    //FIXME переробити на object
     private fun getButtonTouchListener(): View.OnTouchListener {
         return OnTouchListener { _, event ->
             when (event.action) {
@@ -213,6 +226,7 @@ class CustomSwipeButton @JvmOverloads constructor(
         }
     }
 
+    //FIXME переробити на object
     private fun getButtonClickListener(): View.OnClickListener {
         return OnClickListener {
             animateClick()
@@ -221,7 +235,7 @@ class CustomSwipeButton @JvmOverloads constructor(
 
     private fun animateClick() {
         if (isClickToSwipeEnable) {
-            if (this.isActive) {
+            if (this.isActive) { //FIXME тут є this в філда, а вище немає. Треба оприділитись зі стильом
                 animateActiveClick()
             } else {
                 animateInactiveClick()
@@ -232,7 +246,7 @@ class CustomSwipeButton @JvmOverloads constructor(
     private fun animateActiveClick() {
         val animatorSet = AnimatorSet()
         val positionAnimator =
-            ValueAnimator.ofFloat(slidingButtonIv.x, slidingButtonIv.x - 40, slidingButtonIv.x)
+            ValueAnimator.ofFloat(slidingButtonIv.x, slidingButtonIv.x - 40, slidingButtonIv.x)//FIXME шо за 40?
         positionAnimator.addUpdateListener {
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
@@ -243,7 +257,7 @@ class CustomSwipeButton @JvmOverloads constructor(
     private fun animateInactiveClick() {
         val animatorSet = AnimatorSet()
         val positionAnimator =
-            ValueAnimator.ofFloat(slidingButtonIv.x, slidingButtonIv.x + 40, slidingButtonIv.x)
+            ValueAnimator.ofFloat(slidingButtonIv.x, slidingButtonIv.x + 40, slidingButtonIv.x)//FIXME шо за 40?
         positionAnimator.addUpdateListener {
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
@@ -459,6 +473,7 @@ class CustomSwipeButton @JvmOverloads constructor(
         typedArray.recycle()
     }
 
+    //FIXME implement не підходяща назва
     private fun implementActiveStyle() {
         buttonSwipeView.background = activeBackground
         slidingButtonIv.setImageDrawable(activeIcon)
@@ -468,6 +483,7 @@ class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeNewTv.setPadding(0, 0, textPadding, 0)
     }
 
+    //FIXME implement не підходяща назва
     private fun implementInActiveStyle() {
         buttonSwipeView.background = inactiveBackground
         slidingButtonIv.setImageDrawable(inactiveIcon)
@@ -477,6 +493,8 @@ class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeNewTv.setPadding(textPadding, 0, 0, 0)
     }
 
+
+    //TODO я думаю що білдер не потрібен. Але це вже твоє рішення чи його залишати
     class Builder constructor(private val context: Context) {
         private var onSwipedListener: (() -> Unit)? = null
         private var onSwipedOnListener: (() -> Unit)? = null
