@@ -10,232 +10,158 @@ import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
 import android.view.View.OnClickListener
 import android.view.View.OnTouchListener
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.button_swipe.view.*
 
-class CustomSwipeButton @JvmOverloads constructor(
+open class CustomSwipeButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
-    private var isActive: Boolean = false //FIXME переробити в пропертю
-    private var onSwipedListener: (() -> Unit)? = null
-    private var onSwipedOnListener: (() -> Unit)? = null
-    private var onSwipedOffListener: (() -> Unit)? = null
+    var onSwipedListener: (() -> Unit)? = null
+    var onSwipedOnListener: (() -> Unit)? = null
+    var onSwipedOffListener: (() -> Unit)? = null
 
-    private var isClickToSwipeEnable = true//FIXME переробити в пропертю
-    private var swipeProgressToFinish = 0.5//FIXME переробити в пропертю
-    private var swipeProgressToStart = 0.5//FIXME переробити в пропертю
-    private lateinit var activeText: String//FIXME переробити в пропертю
-    private lateinit var inactiveText: String//FIXME переробити в пропертю
-    private var activeTextColor: Int = 0//FIXME переробити в пропертю
-    private var inactiveTextColor: Int = 0//FIXME переробити в пропертю
-    private var activeIcon: Drawable? = null//FIXME переробити в пропертю
-    private var inactiveIcon: Drawable? = null//FIXME переробити в пропертю
-    private var activeBackground: Drawable? = null//FIXME переробити в пропертю
-    private var inactiveBackground: Drawable? = null//FIXME переробити в пропертю
-    private var textPadding: Int = 0//FIXME переробити в пропертю
-    private var textSize: Float = 0.0F//FIXME переробити в пропертю
+    var isActive: Boolean = false
+        set(isActive) {
+            field = isActive
+            activateStyle()
+        }
+    var isClickToSwipeEnable = true
+        set(isClickToSwipeEnable) {
+            field = isClickToSwipeEnable
+            activateStyle()
+        }
+    var swipeProgressToFinish = 0.5
+        set(swipeProgressToFinish) {
+            field = swipeProgressToFinish
+            activateStyle()
+        }
+    var swipeProgressToStart = 0.5
+        set(swipeProgressToStart) {
+            field = swipeProgressToStart
+            activateStyle()
+        }
+    var activeText: String = context.getString(R.string.activate_text)
+        set(activeText) {
+            field = activeText
+            activateStyle()
+        }
+    var inactiveText: String = context.getString(R.string.inactivate_text)
+        set(inactiveText) {
+            field = inactiveText
+            activateStyle()
+        }
+    var activeTextColor: Int = ContextCompat.getColor(context, android.R.color.white)
+        set(activeTextColor) {
+            field = activeTextColor
+            activateStyle()
+        }
+    var inactiveTextColor: Int = ContextCompat.getColor(context, android.R.color.black)
+        set(inactiveTextColor) {
+            field = inactiveTextColor
+            activateStyle()
+        }
+    var activeIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_stop)
+        set(activeIcon) {
+            field = activeIcon
+            activateStyle()
+        }
+    var inactiveIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_play)
+        set(inactiveIcon) {
+            field = inactiveIcon
+            activateStyle()
+        }
+    var inactiveBackground: Drawable? =
+        ContextCompat.getDrawable(context, R.drawable.shape_scrolling_view_inactive)
+        set(inactiveBackground) {
+            field = inactiveBackground
+            activateStyle()
+        }
+    var activeBackground: Drawable? =
+        ContextCompat.getDrawable(context, R.drawable.shape_scrolling_view_active)
+        set(activeBackground) {
+            field = activeBackground
+            activateStyle()
+        }
+    var textPadding: Int = context.resources.getDimensionPixelSize(R.dimen.default_padding)
+        set(textPadding) {
+            field = textPadding
+            activateStyle()
+        }
+    var textSize: Float =
+        context.resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
+        set(textSize) {
+            field = textSize
+            activateStyle()
+        }
+    var isEnable: Boolean = true
+        set(isEnable) {
+            field = isEnable
+
+            updateEnableState()
+        }
+
+    private val onTouchListener = OnTouchListener { v, event ->
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> return@OnTouchListener true
+            MotionEvent.ACTION_MOVE -> {
+                onButtonMove(event)
+                return@OnTouchListener true
+            }
+            MotionEvent.ACTION_UP -> {
+                onButtonMoved()
+                return@OnTouchListener true
+            }
+        }
+        v?.onTouchEvent(event) ?: true
+    }
+
+    private val onClickListener = OnClickListener {
+        animateClick()
+    }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.button_swipe, this, true)
         attrs?.let {
             parseAttr(it)
-        } ?: kotlin.run {
-            initVariables()
         }
-        implementStyle()
+        activateStyle()
+        updateEnableState()
     }
 
-    //FIXME переробити в пропертю
-    fun setActive(isActive: Boolean) {
-        if (this.isActive != isActive) {
-            this.isActive = isActive
-
-            implementStyle()
-        }
-    }
-
-    //FIXME цей метод не потрібен. Зробити філду паблік
-    fun setOnSwipedListener(onSwiped: (() -> Unit)) {
-        this.onSwipedListener = onSwiped
-    }
-    //FIXME цей метод не потрібен. Зробити філду паблік
-    fun setOnSwipedOnListener(onSwiped: (() -> Unit)) {
-        this.onSwipedOnListener = onSwiped
-    }
-    //FIXME цей метод не потрібен. Зробити філду паблік
-    fun setOnSwipedOffListener(onSwiped: (() -> Unit)) {
-        this.onSwipedOffListener = onSwiped
-    }
-    //FIXME переробити в пропертю
-    fun setIsClickToSwipeEnable(isEnable: Boolean) {
-        this.isClickToSwipeEnable = isEnable
-        implementStyle()
-    }
-    //FIXME переробити в пропертю
-    fun setActiveText(activeText: String) {
-        this.activeText = activeText
-        implementStyle()
-    }
-    //FIXME переробити в пропертю
-    fun setInActiveText(inactiveText: String) {
-        this.inactiveText = inactiveText
-        implementStyle()
-    }
-
-    //FIXME переробити в пропертю
-    fun setActiveTextColor(activeTextColor: Int) {
-        this.activeTextColor = activeTextColor
-        implementStyle()
-    }
-
-    //FIXME переробити в пропертю
-    fun setInActiveTextColor(inactiveTextColor: Int) {
-        this.inactiveTextColor = inactiveTextColor
-        implementStyle()
-    }
-
-    //FIXME переробити в пропертю
-    fun setActiveIcon(activeIcon: Drawable?) {
-        this.activeIcon = activeIcon
-        implementStyle()
-    }
-
-    //FIXME переробити в пропертю
-    fun setInActiveIcon(inactiveIcon: Drawable?) {
-        this.inactiveIcon = inactiveIcon
-        implementStyle()
-    }
-
-    //FIXME переробити в пропертю
-    fun setActiveBackground(activeBackground: Drawable?) {
-        this.activeBackground = activeBackground
-        implementStyle()
-    }
-
-    //FIXME переробити в пропертю
-    fun setInActiveBackground(inactiveBackground: Drawable?) {
-        this.inactiveBackground = inactiveBackground
-        implementStyle()
-    }
-
-    //FIXME по дефолту isEnable має бути true. Потрібно зберігати значення isEnable. Додати метод isEnable
-    //FIXME або краще по можливості переробити на проперю
-    fun setEnable(isEnable: Boolean) {
-        if (isEnable) {
-            slidingButtonIv.setOnClickListener(getButtonClickListener())
-            slidingButtonIv.setOnTouchListener(getButtonTouchListener())
-            buttonSwipeView.setOnClickListener(getButtonClickListener())
+    private fun updateEnableState() {
+        if (this.isEnable) {
+            slidingButtonIv.setOnTouchListener(onTouchListener)
+            slidingButtonIv.setOnClickListener(onClickListener)
+            buttonSwipeView.setOnClickListener(onClickListener)
         } else {
             slidingButtonIv.setOnClickListener(null)
             slidingButtonIv.setOnTouchListener(null)
             buttonSwipeView.setOnClickListener(null)
         }
-        buttonSwipeView.isEnabled = isEnable
-        buttonSwipeNewTv.isEnabled = isEnable
-        slidingButtonIv.isEnabled = isEnable
-    }
-    //FIXME переробити в пропертю
-    fun setSwipeProgressToFinish(swipeProgressToFinish: Double) {
-        this.swipeProgressToFinish = swipeProgressToFinish
-    }
-    //FIXME переробити в пропертю
-    fun setSwipeProgressToStart(swipeProgressToStart: Double) {
-        this.swipeProgressToStart = swipeProgressToStart
-    }
-    //FIXME переробити в пропертю
-    fun setTextPadding(textPadding: Int) {
-        this.textPadding = textPadding
-    }
-    //FIXME переробити в пропертю
-    fun setTextSize(textSize: Float) {
-        this.textSize = textSize
+        buttonSwipeView.isEnabled = this.isEnable
+        buttonSwipeNewTv.isEnabled = this.isEnable
+        slidingButtonIv.isEnabled = this.isEnable
     }
 
-    //FIXME переробити в пропертю
-    private fun initVariables() {
-        isActive = false
-        isClickToSwipeEnable = true
-
-        activeText = context.getString(R.string.activate_text)
-        inactiveText = context.getString(R.string.inactivate_text)
-        activeTextColor = ContextCompat.getColor(
-            context,
-            android.R.color.white
-        )
-
-        inactiveTextColor = ContextCompat.getColor(
-            context,
-            android.R.color.black
-        )
-
-        activeIcon = ContextCompat.getDrawable(
-            context,
-            R.drawable.ic_stop
-        )
-
-        inactiveIcon = ContextCompat.getDrawable(
-            context,
-            R.drawable.ic_play
-        )
-
-        activeBackground = ContextCompat.getDrawable(
-            context,
-            R.drawable.shape_scrolling_view_active
-        )
-
-        inactiveBackground = ContextCompat.getDrawable(
-            context,
-            R.drawable.shape_scrolling_view_inactive
-        )
-        textPadding = context.resources.getDimensionPixelSize(R.dimen.default_padding)
-
-        textSize = context.resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
-    }
-
-    //FIXME implement не підходяща назва
-    private fun implementStyle() {
-        if (this.isActive) {
-            returnToEnd()
-            implementActiveStyle()
-        } else {
-            returnToStart()
-            implementInActiveStyle()
-        }
-    }
-
-    //FIXME переробити на object
-    private fun getButtonTouchListener(): View.OnTouchListener {
-        return OnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> return@OnTouchListener true
-                MotionEvent.ACTION_MOVE -> {
-                    onButtonMove(event)
-                    return@OnTouchListener true
-                }
-                MotionEvent.ACTION_UP -> {
-                    onButtonMoved()
-                    return@OnTouchListener true
-                }
+    private fun activateStyle() {
+        rootView.post {
+            if (this.isActive) {
+                makeActive()
+                returnToEnd()
+            } else {
+                makeInActive()
+                returnToStart()
             }
-            return@OnTouchListener false
-        }
-    }
-
-    //FIXME переробити на object
-    private fun getButtonClickListener(): View.OnClickListener {
-        return OnClickListener {
-            animateClick()
         }
     }
 
     private fun animateClick() {
         if (isClickToSwipeEnable) {
-            if (this.isActive) { //FIXME тут є this в філда, а вище немає. Треба оприділитись зі стильом
+            if (this.isActive) {
                 animateActiveClick()
             } else {
                 animateInactiveClick()
@@ -246,7 +172,11 @@ class CustomSwipeButton @JvmOverloads constructor(
     private fun animateActiveClick() {
         val animatorSet = AnimatorSet()
         val positionAnimator =
-            ValueAnimator.ofFloat(slidingButtonIv.x, slidingButtonIv.x - 40, slidingButtonIv.x)//FIXME шо за 40?
+            ValueAnimator.ofFloat(
+                (buttonSwipeView.width - slidingButtonIv.width).toFloat(),
+                ((buttonSwipeView.width - slidingButtonIv.width) - (slidingButtonIv.width / 2)).toFloat(),
+                (buttonSwipeView.width - slidingButtonIv.width).toFloat()
+            )
         positionAnimator.addUpdateListener {
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
@@ -257,7 +187,11 @@ class CustomSwipeButton @JvmOverloads constructor(
     private fun animateInactiveClick() {
         val animatorSet = AnimatorSet()
         val positionAnimator =
-            ValueAnimator.ofFloat(slidingButtonIv.x, slidingButtonIv.x + 40, slidingButtonIv.x)//FIXME шо за 40?
+            ValueAnimator.ofFloat(
+                0F,
+                (slidingButtonIv.width / 2).toFloat(),
+                0F
+            )
         positionAnimator.addUpdateListener {
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
@@ -273,21 +207,20 @@ class CustomSwipeButton @JvmOverloads constructor(
         }
         animatorSet.play(positionAnimator)
         animatorSet.start()
+
     }
 
     private fun returnToEnd() {
-        rootView.post {
-            val animatorSet = AnimatorSet()
-            val positionAnimator = ValueAnimator.ofFloat(
-                slidingButtonIv.x,
-                (buttonSwipeView.width - slidingButtonIv.width).toFloat()
-            )
-            positionAnimator.addUpdateListener {
-                slidingButtonIv.x = positionAnimator.animatedValue as Float
-            }
-            animatorSet.play(positionAnimator)
-            animatorSet.start()
+        val animatorSet = AnimatorSet()
+        val positionAnimator = ValueAnimator.ofFloat(
+            slidingButtonIv.x,
+            (buttonSwipeView.width - slidingButtonIv.width).toFloat()
+        )
+        positionAnimator.addUpdateListener {
+            slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
+        animatorSet.play(positionAnimator)
+        animatorSet.start()
     }
 
     private fun animateToStart() {
@@ -300,7 +233,7 @@ class CustomSwipeButton @JvmOverloads constructor(
         animatorSet.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
-                implementInActiveStyle()
+                makeInActive()
 
                 onSwipedOffListener?.invoke()
                 onSwipedListener?.invoke()
@@ -326,7 +259,7 @@ class CustomSwipeButton @JvmOverloads constructor(
         animatorSet.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
-                implementActiveStyle()
+                makeActive()
 
                 onSwipedOnListener?.invoke()
                 onSwipedListener?.invoke()
@@ -352,7 +285,7 @@ class CustomSwipeButton @JvmOverloads constructor(
     }
 
     private fun onButtonMoved() {
-        if (isActive) {
+        if (this.isActive) {
             if (slidingButtonIv.x < buttonSwipeView.width * swipeProgressToStart) {
                 animateToStart()
             } else {
@@ -370,7 +303,7 @@ class CustomSwipeButton @JvmOverloads constructor(
     private fun parseAttr(attrs: AttributeSet) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomSwipeButton)
 
-        isActive = typedArray.getBoolean(R.styleable.CustomSwipeButton_isActive, false)
+        isActivated = typedArray.getBoolean(R.styleable.CustomSwipeButton_isActive, false)
         isClickToSwipeEnable =
                 typedArray.getBoolean(R.styleable.CustomSwipeButton_isClickToSwipeEnable, true)
         swipeProgressToFinish = typedArray.getFloat(
@@ -473,8 +406,7 @@ class CustomSwipeButton @JvmOverloads constructor(
         typedArray.recycle()
     }
 
-    //FIXME implement не підходяща назва
-    private fun implementActiveStyle() {
+    private fun makeActive() {
         buttonSwipeView.background = activeBackground
         slidingButtonIv.setImageDrawable(activeIcon)
         buttonSwipeNewTv.text = activeText
@@ -483,137 +415,12 @@ class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeNewTv.setPadding(0, 0, textPadding, 0)
     }
 
-    //FIXME implement не підходяща назва
-    private fun implementInActiveStyle() {
+    private fun makeInActive() {
         buttonSwipeView.background = inactiveBackground
         slidingButtonIv.setImageDrawable(inactiveIcon)
         buttonSwipeNewTv.text = inactiveText
         buttonSwipeNewTv.textSize = textSize
         buttonSwipeNewTv.setTextColor(inactiveTextColor)
         buttonSwipeNewTv.setPadding(textPadding, 0, 0, 0)
-    }
-
-
-    //TODO я думаю що білдер не потрібен. Але це вже твоє рішення чи його залишати
-    class Builder constructor(private val context: Context) {
-        private var onSwipedListener: (() -> Unit)? = null
-        private var onSwipedOnListener: (() -> Unit)? = null
-        private var onSwipedOffListener: (() -> Unit)? = null
-
-        private var isClickToSwipeEnable = true
-        private var swipeProgressToFinish = 0.5
-        private var swipeProgressToStart = 0.5
-        private lateinit var activeText: String
-        private lateinit var inactiveText: String
-        private var activeTextColor: Int = 0
-        private var inactiveTextColor: Int = 0
-        private var activeIcon: Drawable? = null
-        private var inactiveIcon: Drawable? = null
-        private var activeBackground: Drawable? = null
-        private var inactiveBackground: Drawable? = null
-        private var textPadding: Int = 0
-        private var textSize: Float = 0.0F
-
-        fun setOnSwipedListener(onSwiped: (() -> Unit)): Builder {
-            onSwipedListener = onSwiped
-            return this
-        }
-
-        fun setOnSwipedOnListener(onSwiped: (() -> Unit)): Builder {
-            onSwipedOnListener = onSwiped
-            return this
-        }
-
-        fun setOnSwipedOffListener(onSwiped: (() -> Unit)): Builder {
-            onSwipedOffListener = onSwiped
-            return this
-        }
-
-        fun setIsClickToSwipeEnable(isEnable: Boolean): Builder {
-            isClickToSwipeEnable = isEnable
-            return this
-        }
-
-        fun setActiveText(activeTextMsg: String): Builder {
-            activeText = activeTextMsg
-            return this
-        }
-
-        fun setInActiveText(inactiveTextMsg: String): Builder {
-            inactiveText = inactiveTextMsg
-            return this
-        }
-
-        fun setActiveTextColor(activeTextColorRes: Int): Builder {
-            activeTextColor = activeTextColorRes
-            return this
-        }
-
-        fun setInActiveTextColor(inactiveTextColorRes: Int): Builder {
-            inactiveTextColor = inactiveTextColorRes
-            return this
-        }
-
-        fun setActiveIcon(activeIconDrawable: Drawable?): Builder {
-            activeIcon = activeIconDrawable
-            return this
-        }
-
-        fun setInActiveIcon(inactiveIconDrawable: Drawable?): Builder {
-            inactiveIcon = inactiveIconDrawable
-            return this
-        }
-
-        fun setActiveBackground(activeBackgroundDrawable: Drawable?): Builder {
-            activeBackground = activeBackgroundDrawable
-            return this
-        }
-
-        fun setInActiveBackground(inactiveBackgroundDrawable: Drawable?): Builder {
-            inactiveBackground = inactiveBackgroundDrawable
-            return this
-        }
-
-        fun setTextPadding(textPaddingData: Int): Builder {
-            textPadding = textPaddingData
-            return this
-        }
-
-        fun setTextSize(textSizeData: Float): Builder {
-            textSize = textSizeData
-            return this
-        }
-
-        fun setSwipeProgressToFinish(swipeProgressToFinishData: Double): Builder {
-            swipeProgressToFinish = swipeProgressToFinishData
-            return this
-        }
-
-        fun setSwipeProgressToStart(swipeProgressToFinishStart: Double): Builder {
-            swipeProgressToStart = swipeProgressToFinishStart
-            return this
-        }
-
-        fun build(): CustomSwipeButton {
-            val swipeButton = CustomSwipeButton(context = context)
-            swipeButton.setActiveText(activeText)
-            swipeButton.setInActiveText(inactiveText)
-            swipeButton.setActiveTextColor(activeTextColor)
-            swipeButton.setInActiveTextColor(inactiveTextColor)
-            swipeButton.setActiveIcon(activeIcon)
-            swipeButton.setInActiveIcon(inactiveIcon)
-            swipeButton.setTextPadding(textPadding)
-            swipeButton.setTextSize(textSize)
-            swipeButton.setSwipeProgressToFinish(swipeProgressToFinish)
-            swipeButton.setSwipeProgressToStart(swipeProgressToStart)
-            swipeButton.setActiveBackground(activeBackground)
-            swipeButton.setInActiveBackground(inactiveBackground)
-            swipeButton.setOnSwipedListener { onSwipedListener?.invoke() }
-            swipeButton.setOnSwipedOnListener { onSwipedOnListener?.invoke() }
-            swipeButton.setOnSwipedOffListener { onSwipedOffListener?.invoke() }
-
-            swipeButton.setIsClickToSwipeEnable(true)
-            return swipeButton
-        }
     }
 }
