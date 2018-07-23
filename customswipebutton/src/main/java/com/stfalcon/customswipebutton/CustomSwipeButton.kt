@@ -6,6 +6,7 @@ import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -148,14 +149,12 @@ open class CustomSwipeButton @JvmOverloads constructor(
     }
 
     private fun activateStyle() {
-        rootView.post {
-            if (this.isActive) {
-                makeActive()
-                returnToEnd()
-            } else {
-                makeInActive()
-                returnToStart()
-            }
+        if (this.isActive) {
+            makeActive()
+            returnToEnd()
+        } else {
+            makeInActive()
+            returnToStart()
         }
     }
 
@@ -406,13 +405,26 @@ open class CustomSwipeButton @JvmOverloads constructor(
         typedArray.recycle()
     }
 
+    private fun moveToEnd() {
+        val layoutParams = slidingButtonIv.layoutParams as ConstraintLayout.LayoutParams
+        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.UNSET
+        layoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+        slidingButtonIv.layoutParams = layoutParams
+    }
+
+    private fun moveToStart() {
+        val layoutParams = slidingButtonIv.layoutParams as ConstraintLayout.LayoutParams
+        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
+        layoutParams.rightToRight = ConstraintLayout.LayoutParams.UNSET
+        slidingButtonIv.layoutParams = layoutParams
+    }
+
     private fun makeActive() {
         buttonSwipeView.background = activeBackground
         slidingButtonIv.setImageDrawable(activeIcon)
         buttonSwipeNewTv.text = activeText
         buttonSwipeNewTv.textSize = textSize
         buttonSwipeNewTv.setTextColor(activeTextColor)
-        buttonSwipeNewTv.setPadding(0, 0, textPadding, 0)
     }
 
     private fun makeInActive() {
@@ -421,6 +433,5 @@ open class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeNewTv.text = inactiveText
         buttonSwipeNewTv.textSize = textSize
         buttonSwipeNewTv.setTextColor(inactiveTextColor)
-        buttonSwipeNewTv.setPadding(textPadding, 0, 0, 0)
     }
 }
