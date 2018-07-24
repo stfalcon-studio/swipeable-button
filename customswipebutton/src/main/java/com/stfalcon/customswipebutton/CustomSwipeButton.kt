@@ -6,7 +6,6 @@ import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -28,7 +27,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
     var isActive: Boolean = false
         set(isActive) {
             field = isActive
-            activateStyle()
+            rootView.post { activateStyle() }
         }
     var isClickToSwipeEnable = true
         set(isClickToSwipeEnable) {
@@ -129,6 +128,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         attrs?.let {
             parseAttr(it)
         }
+
         activateStyle()
         updateEnableState()
     }
@@ -151,51 +151,19 @@ open class CustomSwipeButton @JvmOverloads constructor(
     private fun activateStyle() {
         if (this.isActive) {
             makeActive()
-            returnToEnd()
+            moveToEnd()
         } else {
             makeInActive()
-            returnToStart()
+            moveToStart()
         }
     }
 
-    private fun animateClick() {
-        if (isClickToSwipeEnable) {
-            if (this.isActive) {
-                animateActiveClick()
-            } else {
-                animateInactiveClick()
-            }
-        }
+    private fun moveToEnd() {
+        slidingButtonIv.x = (buttonSwipeView.width - slidingButtonIv.width).toFloat()
     }
 
-    private fun animateActiveClick() {
-        val animatorSet = AnimatorSet()
-        val positionAnimator =
-            ValueAnimator.ofFloat(
-                (buttonSwipeView.width - slidingButtonIv.width).toFloat(),
-                ((buttonSwipeView.width - slidingButtonIv.width) - (slidingButtonIv.width / 2)).toFloat(),
-                (buttonSwipeView.width - slidingButtonIv.width).toFloat()
-            )
-        positionAnimator.addUpdateListener {
-            slidingButtonIv.x = positionAnimator.animatedValue as Float
-        }
-        animatorSet.play(positionAnimator)
-        animatorSet.start()
-    }
-
-    private fun animateInactiveClick() {
-        val animatorSet = AnimatorSet()
-        val positionAnimator =
-            ValueAnimator.ofFloat(
-                0F,
-                (slidingButtonIv.width / 2).toFloat(),
-                0F
-            )
-        positionAnimator.addUpdateListener {
-            slidingButtonIv.x = positionAnimator.animatedValue as Float
-        }
-        animatorSet.play(positionAnimator)
-        animatorSet.start()
+    private fun moveToStart() {
+        slidingButtonIv.x = 0F
     }
 
     private fun returnToStart() {
@@ -206,7 +174,6 @@ open class CustomSwipeButton @JvmOverloads constructor(
         }
         animatorSet.play(positionAnimator)
         animatorSet.start()
-
     }
 
     private fun returnToEnd() {
@@ -267,6 +234,46 @@ open class CustomSwipeButton @JvmOverloads constructor(
         })
 
         positionAnimator.interpolator = AccelerateDecelerateInterpolator()
+        animatorSet.play(positionAnimator)
+        animatorSet.start()
+    }
+
+    private fun animateClick() {
+        if (isClickToSwipeEnable) {
+            if (this.isActive) {
+                animateActiveClick()
+            } else {
+                animateInactiveClick()
+            }
+        }
+    }
+
+    private fun animateActiveClick() {
+        val animatorSet = AnimatorSet()
+        val positionAnimator =
+            ValueAnimator.ofFloat(
+                (buttonSwipeView.width - slidingButtonIv.width).toFloat(),
+                ((buttonSwipeView.width - slidingButtonIv.width) - (slidingButtonIv.width / 2)).toFloat(),
+                (buttonSwipeView.width - slidingButtonIv.width).toFloat()
+            )
+        positionAnimator.addUpdateListener {
+            slidingButtonIv.x = positionAnimator.animatedValue as Float
+        }
+        animatorSet.play(positionAnimator)
+        animatorSet.start()
+    }
+
+    private fun animateInactiveClick() {
+        val animatorSet = AnimatorSet()
+        val positionAnimator =
+            ValueAnimator.ofFloat(
+                0F,
+                (slidingButtonIv.width / 2).toFloat(),
+                0F
+            )
+        positionAnimator.addUpdateListener {
+            slidingButtonIv.x = positionAnimator.animatedValue as Float
+        }
         animatorSet.play(positionAnimator)
         animatorSet.start()
     }
@@ -403,20 +410,6 @@ open class CustomSwipeButton @JvmOverloads constructor(
         }
 
         typedArray.recycle()
-    }
-
-    private fun moveToEnd() {
-        val layoutParams = slidingButtonIv.layoutParams as ConstraintLayout.LayoutParams
-        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.UNSET
-        layoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
-        slidingButtonIv.layoutParams = layoutParams
-    }
-
-    private fun moveToStart() {
-        val layoutParams = slidingButtonIv.layoutParams as ConstraintLayout.LayoutParams
-        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
-        layoutParams.rightToRight = ConstraintLayout.LayoutParams.UNSET
-        slidingButtonIv.layoutParams = layoutParams
     }
 
     private fun makeActive() {
