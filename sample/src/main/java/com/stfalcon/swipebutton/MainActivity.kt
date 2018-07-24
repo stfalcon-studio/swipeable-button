@@ -36,32 +36,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initComponent() {
-        customSwipeButton4.isActivated = true
+        customSwipeButton4.isChecked = true
         customSwipeButton4.isEnable = true
-        customSwipeButton4.activeText = "Active text"
-        customSwipeButton4.inactiveText = "InActive text"
-        customSwipeButton4.textPadding =
-                resources.getDimensionPixelSize(R.dimen.default_padding)
+        customSwipeButton4.checkedText = "Checked text"
+        customSwipeButton4.uncheckedText = "Unchecked text"
         customSwipeButton4.textSize =
                 resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
         customSwipeButton4.swipeProgressToFinish = 0.1
         customSwipeButton4.swipeProgressToStart = 0.9
-        customSwipeButton4.activeTextColor = ContextCompat.getColor(
+        customSwipeButton4.checkedTextColor = ContextCompat.getColor(
             this,
             android.R.color.holo_blue_bright
         )
-        customSwipeButton4.inactiveTextColor = ContextCompat.getColor(
+        customSwipeButton4.uncheckedTextColor = ContextCompat.getColor(
             this,
             android.R.color.holo_purple
         )
-        customSwipeButton4.activeBackground =
+        customSwipeButton4.checkedBackground =
                 ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_active)
-        customSwipeButton4.inactiveBackground =
+        customSwipeButton4.uncheckedBackground =
                 ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_inactive)
-        customSwipeButton4.activeIcon = ContextCompat.getDrawable(this, R.drawable.ic_android_black)
-        customSwipeButton4.inactiveIcon = ContextCompat.getDrawable(this, R.drawable.ic_cloud_black)
+        customSwipeButton4.checkedIcon =
+                ContextCompat.getDrawable(this, R.drawable.ic_android_black)
+        customSwipeButton4.uncheckedIcon =
+                ContextCompat.getDrawable(this, R.drawable.ic_cloud_black)
+
         animateBtn.setOnClickListener {
-            customSwipeButton5.setSwipeButtonState(!customSwipeButton5.isActivated)
+            customSwipeButton5.setSwipeButtonState(!customSwipeButton5.isChecked)
         }
     }
 }

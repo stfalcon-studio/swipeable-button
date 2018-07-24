@@ -11,14 +11,13 @@
         android:id="@+id/customSwipeButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        app:activeIcon="@drawable/ic_android_black"
-        app:activeText="active"
-        app:inactiveIcon="@drawable/ic_cloud_black"
-        app:inactiveText="inactive"
+        app:checkedIcon="@drawable/ic_android_black"
+        app:checkedText="active"
+        app:uncheckedIcon="@drawable/ic_cloud_black"
+        app:uncheckedText="inactive"
         app:isClickToSwipeEnable="false"
         app:swipeProgressToFinish="0.3"
         app:swipeProgressToStart="0.3"
-        app:textPadding="56dp"
         app:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -29,15 +28,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:isClickToSwipeEnable="false"
-        app:activeText="@string/active"
-        app:inactiveText="@string/inactive"
+        app:checkedText="@string/checked_state_text"
+        app:uncheckedText="@string/unchecked_state_text"
         app:swipeProgressToFinish="0.3"
         app:swipeProgressToStart="0.3"
-        app:activeIcon="@drawable/ic_android_black"
-        app:inactiveIcon="@drawable/ic_cloud_black"
-        app:activeBackground="@drawable/shape_sample_scrolling_view_active"
-        app:inactiveBackground="@drawable/shape_sample_scrolling_view_inactive"
-        app:textPadding="@dimen/custom_padding"
+        app:checkedIcon="@drawable/ic_android_black"
+        app:uncheckedIcon="@drawable/ic_cloud_black"
+        app:checkedBackground="@drawable/shape_sample_scrolling_view_active"
+        app:uncheckedBackground="@drawable/shape_sample_scrolling_view_inactive"
         app:textSize="@dimen/custom_text_size"
         app:layout_constraintTop_toBottomOf="@+id/customSwipeButton"/>
 
@@ -68,7 +66,6 @@
         android:id="@+id/customSwipeButton5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/animateBtn"/>
 
 </android.support.constraint.ConstraintLayout>

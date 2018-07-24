@@ -16,7 +16,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.button_swipe.view.*
 
-
 open class CustomSwipeButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
@@ -25,14 +24,11 @@ open class CustomSwipeButton @JvmOverloads constructor(
     var onSwipedOnListener: (() -> Unit)? = null
     var onSwipedOffListener: (() -> Unit)? = null
 
-    @get:JvmName("isActivatedState_")
-    @set:JvmName("isActivatedState_")
-    var isActivated: Boolean = false
-        set(isActivated) {
-            field = isActivated
+    var isChecked: Boolean = false
+        set(isChecked) {
+            field = isChecked
             rootView.post { updateState() }
         }
-
     var isClickToSwipeEnable = true
         set(isClickToSwipeEnable) {
             field = isClickToSwipeEnable
@@ -48,51 +44,46 @@ open class CustomSwipeButton @JvmOverloads constructor(
             field = swipeProgressToStart
             updateState()
         }
-    var activeText: String = context.getString(R.string.active_text)
-        set(activeText) {
-            field = activeText
+    var checkedText: String = context.getString(R.string.checked_text)
+        set(checkedText) {
+            field = checkedText
             updateState()
         }
-    var inactiveText: String = context.getString(R.string.inactive_text)
-        set(inactiveText) {
-            field = inactiveText
+    var uncheckedText: String = context.getString(R.string.unchecked_text)
+        set(uncheckedText) {
+            field = uncheckedText
             updateState()
         }
-    var activeTextColor: Int = ContextCompat.getColor(context, android.R.color.white)
-        set(activeTextColor) {
-            field = activeTextColor
+    var checkedTextColor: Int = ContextCompat.getColor(context, android.R.color.white)
+        set(checkedTextColor) {
+            field = checkedTextColor
             updateState()
         }
-    var inactiveTextColor: Int = ContextCompat.getColor(context, android.R.color.black)
-        set(inactiveTextColor) {
-            field = inactiveTextColor
+    var uncheckedTextColor: Int = ContextCompat.getColor(context, android.R.color.black)
+        set(uncheckedTextColor) {
+            field = uncheckedTextColor
             updateState()
         }
-    var activeIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_stop)
-        set(activeIcon) {
-            field = activeIcon
+    var checkedIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_stop)
+        set(checkedIcon) {
+            field = checkedIcon
             updateState()
         }
-    var inactiveIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_play)
-        set(inactiveIcon) {
-            field = inactiveIcon
+    var uncheckedIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_play)
+        set(uncheckedIcon) {
+            field = uncheckedIcon
             updateState()
         }
-    var inactiveBackground: Drawable? =
-        ContextCompat.getDrawable(context, R.drawable.shape_scrolling_view_inactive)
-        set(inactiveBackground) {
-            field = inactiveBackground
+    var uncheckedBackground: Drawable? =
+        ContextCompat.getDrawable(context, R.drawable.shape_scrolling_view_unchecked)
+        set(uncheckedBackground) {
+            field = uncheckedBackground
             updateState()
         }
-    var activeBackground: Drawable? =
-        ContextCompat.getDrawable(context, R.drawable.shape_scrolling_view_active)
-        set(activeBackground) {
-            field = activeBackground
-            updateState()
-        }
-    var textPadding: Int = context.resources.getDimensionPixelSize(R.dimen.default_padding)
-        set(textPadding) {
-            field = textPadding
+    var checkedBackground: Drawable? =
+        ContextCompat.getDrawable(context, R.drawable.shape_scrolling_view_checked)
+        set(checkedBackground) {
+            field = checkedBackground
             updateState()
         }
     var textSize: Float =
@@ -137,8 +128,8 @@ open class CustomSwipeButton @JvmOverloads constructor(
         updateEnableState()
     }
 
-    fun setSwipeButtonState(isActivated: Boolean){
-        if (isActivated) {
+    fun setSwipeButtonState(isChecked: Boolean){
+        if (isChecked) {
             animateToggleToEnd()
         } else {
             animateToggleToStart()
@@ -161,7 +152,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
     }
 
     private fun updateState() {
-        if (this.isActivated) {
+        if (this.isChecked) {
             setActivatedStyle()
             setToggleToEnd()
         } else {
@@ -215,7 +206,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
                 onSwipedOffListener?.invoke()
                 onSwipedListener?.invoke()
-                isActivated = false
+                isChecked = false
             }
         })
 
@@ -241,7 +232,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
                 onSwipedOnListener?.invoke()
                 onSwipedListener?.invoke()
-                isActivated = true
+                isChecked = true
             }
         })
 
@@ -252,7 +243,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     private fun animateClick() {
         if (isClickToSwipeEnable) {
-            if (this.isActivated) {
+            if (this.isChecked) {
                 animateClickToActivate()
             } else {
                 animateClickToDeactivate()
@@ -303,7 +294,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
     }
 
     private fun onButtonMoved() {
-        if (this.isActivated) {
+        if (this.isChecked) {
             if (slidingButtonIv.x < buttonSwipeView.width * swipeProgressToStart) {
                 animateToggleToStart()
             } else {
@@ -321,7 +312,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
     private fun parseAttr(attrs: AttributeSet) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomSwipeButton)
 
-        isActivated = typedArray.getBoolean(R.styleable.CustomSwipeButton_isActive, false)
+        isChecked = typedArray.getBoolean(R.styleable.CustomSwipeButton_isChecked, false)
         isClickToSwipeEnable =
                 typedArray.getBoolean(R.styleable.CustomSwipeButton_isClickToSwipeEnable, true)
         swipeProgressToFinish = typedArray.getFloat(
@@ -333,83 +324,73 @@ open class CustomSwipeButton @JvmOverloads constructor(
             swipeProgressToStart.toFloat()
         ).toDouble()
 
-        activeText = typedArray.getString(R.styleable.CustomSwipeButton_activeText)
+        checkedText = typedArray.getString(R.styleable.CustomSwipeButton_checkedText)
                 ?: context.getString(
             typedArray.getResourceId(
-                R.styleable.CustomSwipeButton_activeText,
-                R.string.active_text
+                R.styleable.CustomSwipeButton_checkedText,
+                R.string.checked_text
             )
         )
 
-        inactiveText = typedArray.getString(R.styleable.CustomSwipeButton_inactiveText)
+        uncheckedText = typedArray.getString(R.styleable.CustomSwipeButton_uncheckedText)
                 ?: context.getString(
             typedArray.getResourceId(
-                R.styleable.CustomSwipeButton_inactiveText,
-                R.string.inactive_text
+                R.styleable.CustomSwipeButton_uncheckedText,
+                R.string.unchecked_text
             )
         )
 
-        activeTextColor =
-                if (typedArray.getInt(R.styleable.CustomSwipeButton_activeTextColor, 0) != 0) {
-                    typedArray.getInt(R.styleable.CustomSwipeButton_activeTextColor, 0)
+        checkedTextColor =
+                if (typedArray.getInt(R.styleable.CustomSwipeButton_checkedTextColor, 0) != 0) {
+                    typedArray.getInt(R.styleable.CustomSwipeButton_checkedTextColor, 0)
                 } else {
                     ContextCompat.getColor(
                         context,
                         typedArray.getResourceId(
-                            R.styleable.CustomSwipeButton_activeTextColor,
+                            R.styleable.CustomSwipeButton_checkedTextColor,
                             android.R.color.white
                         )
                     )
                 }
 
-        inactiveTextColor =
-                if (typedArray.getInt(R.styleable.CustomSwipeButton_inactiveTextColor, 0) != 0) {
-                    typedArray.getInt(R.styleable.CustomSwipeButton_inactiveTextColor, 0)
+        uncheckedTextColor =
+                if (typedArray.getInt(R.styleable.CustomSwipeButton_uncheckedTextColor, 0) != 0) {
+                    typedArray.getInt(R.styleable.CustomSwipeButton_uncheckedTextColor, 0)
                 } else {
                     ContextCompat.getColor(
                         context,
                         typedArray.getResourceId(
-                            R.styleable.CustomSwipeButton_inactiveTextColor,
+                            R.styleable.CustomSwipeButton_uncheckedTextColor,
                             android.R.color.black
                         )
                     )
                 }
 
-        activeIcon = typedArray.getDrawable(R.styleable.CustomSwipeButton_activeIcon)
+        checkedIcon = typedArray.getDrawable(R.styleable.CustomSwipeButton_checkedIcon)
                 ?: ContextCompat.getDrawable(
             context,
-            typedArray.getResourceId(R.styleable.CustomSwipeButton_activeIcon, R.drawable.ic_stop)
+            typedArray.getResourceId(R.styleable.CustomSwipeButton_checkedIcon, R.drawable.ic_stop)
         )
-        inactiveIcon = typedArray.getDrawable(R.styleable.CustomSwipeButton_inactiveIcon)
+        uncheckedIcon = typedArray.getDrawable(R.styleable.CustomSwipeButton_uncheckedIcon)
                 ?: ContextCompat.getDrawable(
             context,
-            typedArray.getResourceId(R.styleable.CustomSwipeButton_inactiveIcon, R.drawable.ic_play)
+            typedArray.getResourceId(R.styleable.CustomSwipeButton_uncheckedIcon, R.drawable.ic_play)
         )
 
-        activeBackground = ContextCompat.getDrawable(
+        checkedBackground = ContextCompat.getDrawable(
             context,
             typedArray.getResourceId(
-                R.styleable.CustomSwipeButton_activeBackground,
-                R.drawable.shape_scrolling_view_active
+                R.styleable.CustomSwipeButton_checkedBackground,
+                R.drawable.shape_scrolling_view_checked
             )
         )
-        inactiveBackground = ContextCompat.getDrawable(
+        uncheckedBackground = ContextCompat.getDrawable(
             context,
             typedArray.getResourceId(
-                R.styleable.CustomSwipeButton_inactiveBackground,
-                R.drawable.shape_scrolling_view_inactive
+                R.styleable.CustomSwipeButton_uncheckedBackground,
+                R.drawable.shape_scrolling_view_unchecked
             )
         )
-
-        textPadding = if (typedArray.getDimensionPixelSize(
-                R.styleable.CustomSwipeButton_textPadding,
-                0
-            ) != 0
-        ) {
-            typedArray.getDimensionPixelSize(R.styleable.CustomSwipeButton_textPadding, 0)
-        } else {
-            context.resources.getDimensionPixelSize(R.dimen.default_padding)
-        }
 
         textSize = if (typedArray.getDimensionPixelSize(
                 R.styleable.CustomSwipeButton_textSize,
@@ -425,18 +406,18 @@ open class CustomSwipeButton @JvmOverloads constructor(
     }
 
     private fun setActivatedStyle() {
-        buttonSwipeView.background = activeBackground
-        slidingButtonIv.setImageDrawable(activeIcon)
-        buttonSwipeNewTv.text = activeText
+        buttonSwipeView.background = checkedBackground
+        slidingButtonIv.setImageDrawable(checkedIcon)
+        buttonSwipeNewTv.text = checkedText
         buttonSwipeNewTv.textSize = textSize
-        buttonSwipeNewTv.setTextColor(activeTextColor)
+        buttonSwipeNewTv.setTextColor(checkedTextColor)
     }
 
     private fun setDeactivatedStyle() {
-        buttonSwipeView.background = inactiveBackground
-        slidingButtonIv.setImageDrawable(inactiveIcon)
-        buttonSwipeNewTv.text = inactiveText
+        buttonSwipeView.background = uncheckedBackground
+        slidingButtonIv.setImageDrawable(uncheckedIcon)
+        buttonSwipeNewTv.text = uncheckedText
         buttonSwipeNewTv.textSize = textSize
-        buttonSwipeNewTv.setTextColor(inactiveTextColor)
+        buttonSwipeNewTv.setTextColor(uncheckedTextColor)
     }
 }

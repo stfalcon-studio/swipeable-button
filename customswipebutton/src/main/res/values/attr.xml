@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CustomSwipeButton">
-        <attr name="isActive" format="boolean" />
+        <attr name="isChecked" format="boolean" />
         <attr name="isClickToSwipeEnable" format="boolean" />
         <attr name="swipeProgressToFinish" format="float" />
         <attr name="swipeProgressToStart" format="float" />
-        <attr name="activeText" format="string|reference" />
-        <attr name="inactiveText" format="string|reference" />
-        <attr name="activeTextColor" format="integer|reference" />
-        <attr name="inactiveTextColor" format="integer|reference" />
-        <attr name="activeIcon" format="reference" />
-        <attr name="inactiveIcon" format="reference" />
-        <attr name="activeBackground" format="reference" />
-        <attr name="inactiveBackground" format="reference" />
-        <attr name="textPadding" format="float|dimension" />
+        <attr name="checkedText" format="string|reference" />
+        <attr name="uncheckedText" format="string|reference" />
+        <attr name="checkedTextColor" format="integer|reference" />
+        <attr name="uncheckedTextColor" format="integer|reference" />
+        <attr name="checkedIcon" format="reference" />
+        <attr name="uncheckedIcon" format="reference" />
+        <attr name="checkedBackground" format="reference" />
+        <attr name="uncheckedBackground" format="reference" />
         <attr name="textSize" format="float|dimension" />
     </declare-styleable>
 </resources>
