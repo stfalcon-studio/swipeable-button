@@ -43,12 +43,14 @@
         app:isClickToSwipeEnable="false"
         app:checkedText="@string/checked_state_text"
         app:uncheckedText="@string/unchecked_state_text"
+        app:checkedTextColor="@color/checkedTextColor"
+        app:uncheckedTextColor="@color/uncheckedTextColor"
         app:swipeProgressToFinish="0.3"
         app:swipeProgressToStart="0.3"
         app:checkedIcon="@drawable/ic_android_black"
         app:uncheckedIcon="@drawable/ic_cloud_black"
-        app:checkedBackground="@drawable/shape_sample_scrolling_view_active"
-        app:uncheckedBackground="@drawable/shape_sample_scrolling_view_inactive"
+        app:checkedBackground="@drawable/shape_sample_scrolling_view_checked"
+        app:uncheckedBackground="@drawable/shape_sample_scrolling_view_unchecked"
         app:textSize="@dimen/custom_text_size"
         app:layout_constraintTop_toBottomOf="@+id/dividerContainer"/>
 
