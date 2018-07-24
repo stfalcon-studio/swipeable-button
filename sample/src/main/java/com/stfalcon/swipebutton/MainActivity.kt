@@ -16,8 +16,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        customSwipeButton2.isEnable = false
-        customSwipeButton3.isEnable = true
 
         initComponent()
         initListeners()
@@ -36,33 +34,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initComponent() {
-        customSwipeButton4.isChecked = true
-        customSwipeButton4.isEnable = true
-        customSwipeButton4.checkedText = "Checked text"
-        customSwipeButton4.uncheckedText = "Unchecked text"
-        customSwipeButton4.textSize =
+        customSwipeButton3.isChecked = true
+        customSwipeButton3.isEnable = true
+        customSwipeButton3.checkedText = "Checked text"
+        customSwipeButton3.uncheckedText = "Unchecked text"
+        customSwipeButton3.textSize =
                 resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
-        customSwipeButton4.swipeProgressToFinish = 0.1
-        customSwipeButton4.swipeProgressToStart = 0.9
-        customSwipeButton4.checkedTextColor = ContextCompat.getColor(
+        customSwipeButton3.swipeProgressToFinish = 0.1
+        customSwipeButton3.swipeProgressToStart = 0.9
+        customSwipeButton3.checkedTextColor = ContextCompat.getColor(
             this,
             android.R.color.holo_blue_bright
         )
-        customSwipeButton4.uncheckedTextColor = ContextCompat.getColor(
+        customSwipeButton3.uncheckedTextColor = ContextCompat.getColor(
             this,
             android.R.color.holo_purple
         )
-        customSwipeButton4.checkedBackground =
+        customSwipeButton3.checkedBackground =
                 ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_active)
-        customSwipeButton4.uncheckedBackground =
+        customSwipeButton3.uncheckedBackground =
                 ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_inactive)
-        customSwipeButton4.checkedIcon =
+        customSwipeButton3.checkedIcon =
                 ContextCompat.getDrawable(this, R.drawable.ic_android_black)
-        customSwipeButton4.uncheckedIcon =
+        customSwipeButton3.uncheckedIcon =
                 ContextCompat.getDrawable(this, R.drawable.ic_cloud_black)
 
         animateBtn.setOnClickListener {
-            customSwipeButton5.setSwipeButtonState(!customSwipeButton5.isChecked)
+            customSwipeButton4.setSwipeButtonState(!customSwipeButton4.isChecked)
         }
     }
 }

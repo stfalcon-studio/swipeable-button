@@ -7,23 +7,36 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.stfalcon.customswipebutton.CustomSwipeButton
-        android:id="@+id/customSwipeButton"
-        android:layout_width="300dp"
+    <LinearLayout
+        android:id="@+id/dividerContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:checkedIcon="@drawable/ic_android_black"
-        app:checkedText="active"
-        app:uncheckedIcon="@drawable/ic_cloud_black"
-        app:uncheckedText="inactive"
-        app:isClickToSwipeEnable="false"
-        app:swipeProgressToFinish="0.3"
-        app:swipeProgressToStart="0.3"
-        app:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/default_margin">
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="1dp"
+            android:background="@android:color/background_dark"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:text="Set parameters using attributes"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:background="@android:color/background_dark"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
 
     <com.stfalcon.customswipebutton.CustomSwipeButton
-        android:id="@+id/customSwipeButton2"
+        android:id="@+id/customSwipeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -37,33 +50,120 @@
         app:checkedBackground="@drawable/shape_sample_scrolling_view_active"
         app:uncheckedBackground="@drawable/shape_sample_scrolling_view_inactive"
         app:textSize="@dimen/custom_text_size"
-        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton"/>
+        app:layout_constraintTop_toBottomOf="@+id/dividerContainer"/>
+
+    <LinearLayout
+        android:id="@+id/dividerContainer2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/default_margin"
+        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton">
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="1dp"
+            android:background="@android:color/background_dark"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:text="Default view without attributes"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:background="@android:color/background_dark"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <com.stfalcon.customswipebutton.CustomSwipeButton
+        android:id="@+id/customSwipeButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/dividerContainer2"/>
+
+    <LinearLayout
+        android:id="@+id/dividerContainer3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/default_margin"
+        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton2">
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="1dp"
+            android:background="@android:color/background_dark"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:text="Programmatically set parameters"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:background="@android:color/background_dark"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
 
     <com.stfalcon.customswipebutton.CustomSwipeButton
         android:id="@+id/customSwipeButton3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton2"/>
+        app:layout_constraintTop_toBottomOf="@+id/dividerContainer3"/>
 
-    <com.stfalcon.customswipebutton.CustomSwipeButton
-        android:id="@+id/customSwipeButton4"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/dividerContainer4"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton3"/>
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/default_margin"
+        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton3">
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="1dp"
+            android:background="@android:color/background_dark"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:text="Programmatically animate"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:background="@android:color/background_dark"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/animateBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Animate Swipe"
-        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton4"
+        app:layout_constraintTop_toBottomOf="@+id/dividerContainer4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.stfalcon.customswipebutton.CustomSwipeButton
-        android:id="@+id/customSwipeButton5"
+        android:id="@+id/customSwipeButton4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/animateBtn"/>
