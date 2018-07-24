@@ -16,6 +16,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.button_swipe.view.*
 
+
 open class CustomSwipeButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
@@ -24,78 +25,81 @@ open class CustomSwipeButton @JvmOverloads constructor(
     var onSwipedOnListener: (() -> Unit)? = null
     var onSwipedOffListener: (() -> Unit)? = null
 
-    var isActive: Boolean = false
-        set(isActive) {
-            field = isActive
-            rootView.post { activateStyle() }
+    @get:JvmName("isActivatedState_")
+    @set:JvmName("isActivatedState_")
+    var isActivated: Boolean = false
+        set(isActivated) {
+            field = isActivated
+            rootView.post { updateState() }
         }
+
     var isClickToSwipeEnable = true
         set(isClickToSwipeEnable) {
             field = isClickToSwipeEnable
-            activateStyle()
+            updateState()
         }
     var swipeProgressToFinish = 0.5
         set(swipeProgressToFinish) {
             field = swipeProgressToFinish
-            activateStyle()
+            updateState()
         }
     var swipeProgressToStart = 0.5
         set(swipeProgressToStart) {
             field = swipeProgressToStart
-            activateStyle()
+            updateState()
         }
-    var activeText: String = context.getString(R.string.activate_text)
+    var activeText: String = context.getString(R.string.active_text)
         set(activeText) {
             field = activeText
-            activateStyle()
+            updateState()
         }
-    var inactiveText: String = context.getString(R.string.inactivate_text)
+    var inactiveText: String = context.getString(R.string.inactive_text)
         set(inactiveText) {
             field = inactiveText
-            activateStyle()
+            updateState()
         }
     var activeTextColor: Int = ContextCompat.getColor(context, android.R.color.white)
         set(activeTextColor) {
             field = activeTextColor
-            activateStyle()
+            updateState()
         }
     var inactiveTextColor: Int = ContextCompat.getColor(context, android.R.color.black)
         set(inactiveTextColor) {
             field = inactiveTextColor
-            activateStyle()
+            updateState()
         }
     var activeIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_stop)
         set(activeIcon) {
             field = activeIcon
-            activateStyle()
+            updateState()
         }
     var inactiveIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_play)
         set(inactiveIcon) {
             field = inactiveIcon
-            activateStyle()
+            updateState()
         }
     var inactiveBackground: Drawable? =
         ContextCompat.getDrawable(context, R.drawable.shape_scrolling_view_inactive)
         set(inactiveBackground) {
             field = inactiveBackground
-            activateStyle()
+            updateState()
         }
     var activeBackground: Drawable? =
         ContextCompat.getDrawable(context, R.drawable.shape_scrolling_view_active)
         set(activeBackground) {
             field = activeBackground
-            activateStyle()
+            updateState()
         }
     var textPadding: Int = context.resources.getDimensionPixelSize(R.dimen.default_padding)
         set(textPadding) {
             field = textPadding
-            activateStyle()
+            updateState()
         }
     var textSize: Float =
         context.resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
         set(textSize) {
             field = textSize
-            activateStyle()
+            updateState()
         }
     var isEnable: Boolean = true
         set(isEnable) {
@@ -129,8 +133,16 @@ open class CustomSwipeButton @JvmOverloads constructor(
             parseAttr(it)
         }
 
-        activateStyle()
+        updateState()
         updateEnableState()
+    }
+
+    fun setSwipeButtonState(isActivated: Boolean){
+        if (isActivated) {
+            animateToggleToEnd()
+        } else {
+            animateToggleToStart()
+        }
     }
 
     private fun updateEnableState() {
@@ -148,25 +160,25 @@ open class CustomSwipeButton @JvmOverloads constructor(
         slidingButtonIv.isEnabled = this.isEnable
     }
 
-    private fun activateStyle() {
-        if (this.isActive) {
-            makeActive()
-            moveToEnd()
+    private fun updateState() {
+        if (this.isActivated) {
+            setActivatedStyle()
+            setToggleToEnd()
         } else {
-            makeInActive()
-            moveToStart()
+            setDeactivatedStyle()
+            setToggleToStart()
         }
     }
 
-    private fun moveToEnd() {
+    private fun setToggleToEnd() {
         slidingButtonIv.x = (buttonSwipeView.width - slidingButtonIv.width).toFloat()
     }
 
-    private fun moveToStart() {
+    private fun setToggleToStart() {
         slidingButtonIv.x = 0F
     }
 
-    private fun returnToStart() {
+    private fun returnToggleToStart() {
         val animatorSet = AnimatorSet()
         val positionAnimator = ValueAnimator.ofFloat(slidingButtonIv.x, 0F)
         positionAnimator.addUpdateListener {
@@ -176,7 +188,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         animatorSet.start()
     }
 
-    private fun returnToEnd() {
+    private fun returnToggleToEnd() {
         val animatorSet = AnimatorSet()
         val positionAnimator = ValueAnimator.ofFloat(
             slidingButtonIv.x,
@@ -189,7 +201,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         animatorSet.start()
     }
 
-    private fun animateToStart() {
+    private fun animateToggleToStart() {
         val animatorSet = AnimatorSet()
         val positionAnimator = ValueAnimator.ofFloat(slidingButtonIv.x, 0F)
         positionAnimator.addUpdateListener {
@@ -199,11 +211,11 @@ open class CustomSwipeButton @JvmOverloads constructor(
         animatorSet.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
-                makeInActive()
+                setDeactivatedStyle()
 
                 onSwipedOffListener?.invoke()
                 onSwipedListener?.invoke()
-                isActive = false
+                isActivated = false
             }
         })
 
@@ -212,7 +224,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         animatorSet.start()
     }
 
-    private fun animateToEnd() {
+    private fun animateToggleToEnd() {
         val animatorSet = AnimatorSet()
         val positionAnimator = ValueAnimator.ofFloat(
             slidingButtonIv.x,
@@ -225,11 +237,11 @@ open class CustomSwipeButton @JvmOverloads constructor(
         animatorSet.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
-                makeActive()
+                setActivatedStyle()
 
                 onSwipedOnListener?.invoke()
                 onSwipedListener?.invoke()
-                isActive = true
+                isActivated = true
             }
         })
 
@@ -240,15 +252,15 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     private fun animateClick() {
         if (isClickToSwipeEnable) {
-            if (this.isActive) {
-                animateActiveClick()
+            if (this.isActivated) {
+                animateClickToActivate()
             } else {
-                animateInactiveClick()
+                animateClickToDeactivate()
             }
         }
     }
 
-    private fun animateActiveClick() {
+    private fun animateClickToActivate() {
         val animatorSet = AnimatorSet()
         val positionAnimator =
             ValueAnimator.ofFloat(
@@ -263,7 +275,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         animatorSet.start()
     }
 
-    private fun animateInactiveClick() {
+    private fun animateClickToDeactivate() {
         val animatorSet = AnimatorSet()
         val positionAnimator =
             ValueAnimator.ofFloat(
@@ -291,17 +303,17 @@ open class CustomSwipeButton @JvmOverloads constructor(
     }
 
     private fun onButtonMoved() {
-        if (this.isActive) {
+        if (this.isActivated) {
             if (slidingButtonIv.x < buttonSwipeView.width * swipeProgressToStart) {
-                animateToStart()
+                animateToggleToStart()
             } else {
-                returnToEnd()
+                returnToggleToEnd()
             }
         } else {
             if (slidingButtonIv.x > buttonSwipeView.width * swipeProgressToFinish) {
-                animateToEnd()
+                animateToggleToEnd()
             } else {
-                returnToStart()
+                returnToggleToStart()
             }
         }
     }
@@ -325,7 +337,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
                 ?: context.getString(
             typedArray.getResourceId(
                 R.styleable.CustomSwipeButton_activeText,
-                R.string.activate_text
+                R.string.active_text
             )
         )
 
@@ -333,7 +345,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
                 ?: context.getString(
             typedArray.getResourceId(
                 R.styleable.CustomSwipeButton_inactiveText,
-                R.string.inactivate_text
+                R.string.inactive_text
             )
         )
 
@@ -412,7 +424,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         typedArray.recycle()
     }
 
-    private fun makeActive() {
+    private fun setActivatedStyle() {
         buttonSwipeView.background = activeBackground
         slidingButtonIv.setImageDrawable(activeIcon)
         buttonSwipeNewTv.text = activeText
@@ -420,7 +432,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeNewTv.setTextColor(activeTextColor)
     }
 
-    private fun makeInActive() {
+    private fun setDeactivatedStyle() {
         buttonSwipeView.background = inactiveBackground
         slidingButtonIv.setImageDrawable(inactiveIcon)
         buttonSwipeNewTv.text = inactiveText
