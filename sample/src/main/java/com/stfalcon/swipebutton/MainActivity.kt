@@ -44,16 +44,16 @@ class MainActivity : AppCompatActivity() {
         customSwipeButton3.swipeProgressToStart = 0.9
         customSwipeButton3.checkedTextColor = ContextCompat.getColor(
             this,
-            android.R.color.holo_blue_bright
+            R.color.checkedTextColor
         )
         customSwipeButton3.uncheckedTextColor = ContextCompat.getColor(
             this,
-            android.R.color.holo_purple
+            R.color.uncheckedTextColor
         )
         customSwipeButton3.checkedBackground =
-                ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_active)
+                ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_checked)
         customSwipeButton3.uncheckedBackground =
-                ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_inactive)
+                ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_unchecked)
         customSwipeButton3.checkedIcon =
                 ContextCompat.getDrawable(this, R.drawable.ic_android_black)
         customSwipeButton3.uncheckedIcon =
