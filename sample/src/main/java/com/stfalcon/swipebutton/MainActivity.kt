@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initComponent() {
-        customSwipeButton4.isActive = true
+        customSwipeButton4.isActivated = true
         customSwipeButton4.isEnable = true
         customSwipeButton4.activeText = "Active text"
         customSwipeButton4.inactiveText = "InActive text"
@@ -60,5 +60,8 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_inactive)
         customSwipeButton4.activeIcon = ContextCompat.getDrawable(this, R.drawable.ic_android_black)
         customSwipeButton4.inactiveIcon = ContextCompat.getDrawable(this, R.drawable.ic_cloud_black)
+        animateBtn.setOnClickListener {
+            customSwipeButton5.setSwipeButtonState(!customSwipeButton5.isActivated)
+        }
     }
 }
