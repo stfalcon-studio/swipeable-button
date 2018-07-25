@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         customSwipeButton3.textSize =
                 resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
         customSwipeButton3.swipeProgressToFinish = 0.1
-        customSwipeButton3.swipeProgressToStart = 0.9
+        customSwipeButton3.swipeProgressToStart = 0.8
         customSwipeButton3.checkedTextColor = ContextCompat.getColor(
             this,
             R.color.checkedTextColor
@@ -54,10 +54,14 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_checked)
         customSwipeButton3.uncheckedBackground =
                 ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_unchecked)
+        customSwipeButton3.checkedToggleBackground =
+                ContextCompat.getDrawable(this, R.drawable.shape_sample_checked_toggle)
+        customSwipeButton3.uncheckedToggleBackground =
+                ContextCompat.getDrawable(this, R.drawable.shape_sample_unchecked_toggle)
         customSwipeButton3.checkedIcon =
-                ContextCompat.getDrawable(this, R.drawable.ic_android_black)
+                ContextCompat.getDrawable(this, R.drawable.ic_done_black)
         customSwipeButton3.uncheckedIcon =
-                ContextCompat.getDrawable(this, R.drawable.ic_cloud_black)
+                ContextCompat.getDrawable(this, R.drawable.ic_pause_black)
 
         animateBtn.setOnClickListener {
             customSwipeButton4.setSwipeButtonState(!customSwipeButton4.isChecked)

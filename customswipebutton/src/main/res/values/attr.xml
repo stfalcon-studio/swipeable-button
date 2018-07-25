@@ -11,6 +11,8 @@
         <attr name="uncheckedTextColor" format="integer|reference" />
         <attr name="checkedIcon" format="reference" />
         <attr name="uncheckedIcon" format="reference" />
+        <attr name="checkedToggleBackground" format="reference" />
+        <attr name="uncheckedToggleBackground" format="reference" />
         <attr name="checkedBackground" format="reference" />
         <attr name="uncheckedBackground" format="reference" />
         <attr name="textSize" format="float|dimension" />

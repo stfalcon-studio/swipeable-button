@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeButtonContainer"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true">
 
     <View
         android:id="@+id/buttonSwipeView"
@@ -22,8 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingRight="@dimen/default_padding"
         android:ellipsize="end"
         android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="@+id/slidingButtonIv"
@@ -36,7 +35,7 @@
         android:id="@+id/slidingButtonIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_circle_button"
+        android:background="@drawable/shape_unchecked_toggle"
         android:padding="16dp"
         android:src="@drawable/ic_play"
         app:layout_constraintBottom_toBottomOf="parent"
