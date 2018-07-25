@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">SwipeButton</string>
-    <string name="active">Active</string>
-    <string name="inactive">Inactive</string>
+    <string name="checked_state_text">Checked</string>
+    <string name="unchecked_state_text">Unchecked</string>
 </resources>
