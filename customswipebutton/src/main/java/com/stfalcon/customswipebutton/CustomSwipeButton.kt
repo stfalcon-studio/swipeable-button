@@ -1,11 +1,9 @@
 package com.stfalcon.customswipebutton
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ValueAnimator
+import android.animation.*
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.TransitionDrawable
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -15,6 +13,7 @@ import android.view.View.OnTouchListener
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.button_swipe.view.*
+
 
 open class CustomSwipeButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -74,6 +73,18 @@ open class CustomSwipeButton @JvmOverloads constructor(
             field = uncheckedIcon
             updateState()
         }
+    var uncheckedToggleBackground: Drawable? =
+        ContextCompat.getDrawable(context, R.drawable.shape_unchecked_toggle)
+        set(uncheckedToggleBackground) {
+            field = uncheckedToggleBackground
+            updateState()
+        }
+    var checkedToggleBackground: Drawable? =
+        ContextCompat.getDrawable(context, R.drawable.shape_checked_toggle)
+        set(checkedToggleBackground) {
+            field = checkedToggleBackground
+            updateState()
+        }
     var uncheckedBackground: Drawable? =
         ContextCompat.getDrawable(context, R.drawable.shape_scrolling_view_unchecked)
         set(uncheckedBackground) {
@@ -118,6 +129,10 @@ open class CustomSwipeButton @JvmOverloads constructor(
         animateClick()
     }
 
+    companion object {
+        const val ANIMATION_DURATION = 200
+    }
+
     init {
         LayoutInflater.from(context).inflate(R.layout.button_swipe, this, true)
         attrs?.let {
@@ -128,7 +143,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         updateEnableState()
     }
 
-    fun setSwipeButtonState(isChecked: Boolean){
+    fun setSwipeButtonState(isChecked: Boolean) {
         if (isChecked) {
             animateToggleToEnd()
         } else {
@@ -194,6 +209,15 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     private fun animateToggleToStart() {
         val animatorSet = AnimatorSet()
+
+        animateBackgroundChange(STATE_CHANGE_DIRECTION.CHECKED_UNCHECKED)
+        animateToggleChange(STATE_CHANGE_DIRECTION.CHECKED_UNCHECKED)
+
+        val colorAnimation =
+            ValueAnimator.ofObject(ArgbEvaluator(), checkedTextColor, uncheckedTextColor)
+        colorAnimation.duration = ANIMATION_DURATION.toLong()
+        colorAnimation.addUpdateListener { animator -> buttonSwipeNewTv.setTextColor(animator.animatedValue as Int) }
+
         val positionAnimator = ValueAnimator.ofFloat(slidingButtonIv.x, 0F)
         positionAnimator.addUpdateListener {
             slidingButtonIv.x = positionAnimator.animatedValue as Float
@@ -211,12 +235,21 @@ open class CustomSwipeButton @JvmOverloads constructor(
         })
 
         positionAnimator.interpolator = AccelerateDecelerateInterpolator()
-        animatorSet.play(positionAnimator)
+        animatorSet.playTogether(positionAnimator, colorAnimation)
         animatorSet.start()
     }
 
     private fun animateToggleToEnd() {
         val animatorSet = AnimatorSet()
+
+        animateBackgroundChange(STATE_CHANGE_DIRECTION.UNCHECKED_CHECKED)
+        animateToggleChange(STATE_CHANGE_DIRECTION.UNCHECKED_CHECKED)
+
+        val colorAnimation =
+            ValueAnimator.ofObject(ArgbEvaluator(), uncheckedTextColor, checkedTextColor)
+        colorAnimation.duration = ANIMATION_DURATION.toLong()
+        colorAnimation.addUpdateListener { animator -> buttonSwipeNewTv.setTextColor(animator.animatedValue as Int) }
+
         val positionAnimator = ValueAnimator.ofFloat(
             slidingButtonIv.x,
             (buttonSwipeView.width - slidingButtonIv.width).toFloat()
@@ -237,7 +270,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         })
 
         positionAnimator.interpolator = AccelerateDecelerateInterpolator()
-        animatorSet.play(positionAnimator)
+        animatorSet.playTogether(positionAnimator, colorAnimation)
         animatorSet.start()
     }
 
@@ -253,6 +286,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     private fun animateClickToActivate() {
         val animatorSet = AnimatorSet()
+
         val positionAnimator =
             ValueAnimator.ofFloat(
                 (buttonSwipeView.width - slidingButtonIv.width).toFloat(),
@@ -268,6 +302,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     private fun animateClickToDeactivate() {
         val animatorSet = AnimatorSet()
+
         val positionAnimator =
             ValueAnimator.ofFloat(
                 0F,
@@ -281,14 +316,47 @@ open class CustomSwipeButton @JvmOverloads constructor(
         animatorSet.start()
     }
 
+    private fun animateBackgroundChange(direction: STATE_CHANGE_DIRECTION) {
+        val backgrounds = arrayOfNulls<Drawable>(2)
+
+        if (direction == STATE_CHANGE_DIRECTION.UNCHECKED_CHECKED) {
+            backgrounds[0] = uncheckedBackground
+            backgrounds[1] = checkedBackground
+        } else {
+            backgrounds[0] = checkedBackground
+            backgrounds[1] = uncheckedBackground
+        }
+
+        val backgroundTransition = TransitionDrawable(backgrounds)
+        buttonSwipeView.background = backgroundTransition
+        backgroundTransition.startTransition(ANIMATION_DURATION)
+    }
+
+    private fun animateToggleChange(direction: STATE_CHANGE_DIRECTION) {
+        val backgrounds = arrayOfNulls<Drawable>(2)
+
+        if (direction == STATE_CHANGE_DIRECTION.UNCHECKED_CHECKED) {
+            backgrounds[0] = uncheckedToggleBackground
+            backgrounds[1] = checkedToggleBackground
+        } else {
+            backgrounds[0] = checkedToggleBackground
+            backgrounds[1] = uncheckedToggleBackground
+        }
+
+        val backgroundTransition = TransitionDrawable(backgrounds)
+        slidingButtonIv.background = backgroundTransition
+        backgroundTransition.startTransition(ANIMATION_DURATION)
+    }
+
     private fun onButtonMove(event: MotionEvent) {
+        val newCoordinates = slidingButtonIv.x + event.x
         if (slidingButtonIv.x >= 0
-            && event.rawX + slidingButtonIv.width / 2 < width
+            && newCoordinates + slidingButtonIv.width / 2 < width
         ) {
-            if (slidingButtonIv.x + slidingButtonIv.width / 2 < event.x
-                || event.rawX - slidingButtonIv.width / 2 > buttonSwipeView.x
+            if (slidingButtonIv.x + slidingButtonIv.width / 2 < newCoordinates
+                || newCoordinates - slidingButtonIv.width / 2 > buttonSwipeView.x
             ) {
-                slidingButtonIv.x = event.rawX - slidingButtonIv.width / 2
+                slidingButtonIv.x = newCoordinates - slidingButtonIv.width / 2
             }
         }
     }
@@ -374,7 +442,26 @@ open class CustomSwipeButton @JvmOverloads constructor(
         uncheckedIcon = typedArray.getDrawable(R.styleable.CustomSwipeButton_uncheckedIcon)
                 ?: ContextCompat.getDrawable(
             context,
-            typedArray.getResourceId(R.styleable.CustomSwipeButton_uncheckedIcon, R.drawable.ic_play)
+            typedArray.getResourceId(
+                R.styleable.CustomSwipeButton_uncheckedIcon,
+                R.drawable.ic_play
+            )
+        )
+
+        uncheckedToggleBackground = ContextCompat.getDrawable(
+            context,
+            typedArray.getResourceId(
+                R.styleable.CustomSwipeButton_uncheckedToggleBackground,
+                R.drawable.shape_unchecked_toggle
+            )
+        )
+
+        checkedToggleBackground = ContextCompat.getDrawable(
+            context,
+            typedArray.getResourceId(
+                R.styleable.CustomSwipeButton_checkedToggleBackground,
+                R.drawable.shape_checked_toggle
+            )
         )
 
         checkedBackground = ContextCompat.getDrawable(
@@ -407,7 +494,9 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     private fun setActivatedStyle() {
         buttonSwipeView.background = checkedBackground
+        slidingButtonIv.background = checkedToggleBackground
         slidingButtonIv.setImageDrawable(checkedIcon)
+        buttonSwipeNewTv.text = checkedText
         buttonSwipeNewTv.text = checkedText
         buttonSwipeNewTv.textSize = textSize
         buttonSwipeNewTv.setTextColor(checkedTextColor)
@@ -415,9 +504,15 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     private fun setDeactivatedStyle() {
         buttonSwipeView.background = uncheckedBackground
+        slidingButtonIv.background = uncheckedToggleBackground
         slidingButtonIv.setImageDrawable(uncheckedIcon)
         buttonSwipeNewTv.text = uncheckedText
         buttonSwipeNewTv.textSize = textSize
         buttonSwipeNewTv.setTextColor(uncheckedTextColor)
+    }
+
+    private enum class STATE_CHANGE_DIRECTION {
+        CHECKED_UNCHECKED,
+        UNCHECKED_CHECKED
     }
 }
