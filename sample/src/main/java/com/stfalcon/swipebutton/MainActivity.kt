@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         customSwipeButton3.textSize =
                 resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
         customSwipeButton3.swipeProgressToFinish = 0.1
-        customSwipeButton3.swipeProgressToStart = 0.8
+        customSwipeButton3.swipeProgressToStart = 0.3
         customSwipeButton3.checkedTextColor = ContextCompat.getColor(
             this,
             R.color.checkedTextColor
