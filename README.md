@@ -62,7 +62,24 @@ Also, we can transfer all parameters through the attributes in the xml file:
    app:layout_constraintStart_toStartOf="parent"
    app:layout_constraintEnd_toEndOf="parent"/>
 ```
-
+or you can set them programmatically
+```
+customSwipeButton.isChecked = true
+customSwipeButton.isEnable = true
+customSwipeButton.checkedText = "Checked text"
+customSwipeButton.uncheckedText = "Unchecked text"
+customSwipeButton.textSize = resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
+customSwipeButton.swipeProgressToFinish = 0.1
+customSwipeButton.swipeProgressToStart = 0.3
+customSwipeButton.checkedTextColor = ContextCompat.getColor(this,R.color.checkedTextColor)
+customSwipeButton.uncheckedTextColor = ContextCompat.getColor(this,R.color.uncheckedTextColor)
+customSwipeButton.checkedBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_checked)
+customSwipeButton.uncheckedBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_unchecked)
+customSwipeButton.checkedToggleBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_checked_toggle)
+customSwipeButton.uncheckedToggleBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_unchecked_toggle)
+customSwipeButton.checkedIcon = ContextCompat.getDrawable(this, R.drawable.ic_done_black)
+customSwipeButton.uncheckedIcon = ContextCompat.getDrawable(this, R.drawable.ic_pause_black)
+```
 If you want programmatically change state of button with animation you should to use method `setSwipeButtonState`.
 ```
 animateBtn.setOnClickListener {
