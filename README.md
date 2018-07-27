@@ -19,7 +19,7 @@ Just put this code in your layout file
 ```
 
 You can use a many attributes for more flexibility and convenience of use. Here's the full list:
-- isChecked - Initial state. Default state is disabled.
+- isChecked - Initial state. Default state is unchecked.
 - isEnable - Is button enable. Default state is enabled.
 - checkedText - Text when button is checked
 - uncheckedText - Text when button is unchecked
