@@ -586,7 +586,11 @@ open class CustomSwipeableButton @JvmOverloads constructor(
                 }
 
         uncheckedTextColor =
-                if (typedArray.getInt(R.styleable.CustomSwipeableButton_uncheckedTextColor, 0) != 0) {
+                if (typedArray.getInt(
+                        R.styleable.CustomSwipeableButton_uncheckedTextColor,
+                        0
+                    ) != 0
+                ) {
                     typedArray.getInt(R.styleable.CustomSwipeableButton_uncheckedTextColor, 0)
                 } else {
                     ContextCompat.getColor(
@@ -601,7 +605,10 @@ open class CustomSwipeableButton @JvmOverloads constructor(
         checkedIcon = typedArray.getDrawable(R.styleable.CustomSwipeableButton_checkedIcon)
                 ?: ContextCompat.getDrawable(
             context,
-            typedArray.getResourceId(R.styleable.CustomSwipeableButton_checkedIcon, R.drawable.ic_stop)
+            typedArray.getResourceId(
+                R.styleable.CustomSwipeableButton_checkedIcon,
+                R.drawable.ic_stop
+            )
         )
         uncheckedIcon = typedArray.getDrawable(R.styleable.CustomSwipeableButton_uncheckedIcon)
                 ?: ContextCompat.getDrawable(
@@ -648,7 +655,8 @@ open class CustomSwipeableButton @JvmOverloads constructor(
                 0
             ) != 0
         ) {
-            typedArray.getDimensionPixelSize(R.styleable.CustomSwipeableButton_textSize, 0).toFloat()
+            typedArray.getDimensionPixelSize(R.styleable.CustomSwipeableButton_textSize, 0)
+                .toFloat()
         } else {
             context.resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
         }
