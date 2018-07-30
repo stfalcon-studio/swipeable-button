@@ -53,7 +53,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
      * */
     var swipeProgressToFinish = 0.5
         set(swipeProgressToFinish) {
-            if (swipeProgressToFinish >=1 || swipeProgressToFinish <= 0) {
+            if (swipeProgressToFinish >= 1 || swipeProgressToFinish <= 0) {
                 throw Throwable("Illegal value argument")
             }
             field = swipeProgressToFinish
@@ -66,7 +66,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
      * */
     var swipeProgressToStart = 0.5
         set(swipeProgressToStart) {
-            if (swipeProgressToStart >=1 || swipeProgressToStart <= 0) {
+            if (swipeProgressToStart >= 1 || swipeProgressToStart <= 0) {
                 throw Throwable("Illegal value argument")
             }
             field = 1 - swipeProgressToStart
@@ -336,6 +336,15 @@ open class CustomSwipeButton @JvmOverloads constructor(
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
 
+        val alphaAnimation = ValueAnimator.ofFloat(1F, 0F, 1F)
+        alphaAnimation.duration = animationDuration.toLong()
+        alphaAnimation.addUpdateListener {
+            if (alphaAnimation.animatedValue as Float <= 0.1) {
+                buttonSwipeNewTv.text = uncheckedText
+            }
+            buttonSwipeNewTv.alpha = alphaAnimation.animatedValue as Float
+        }
+
         animatorSet.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
@@ -348,7 +357,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         })
 
         positionAnimator.interpolator = AccelerateDecelerateInterpolator()
-        animatorSet.playTogether(positionAnimator, colorAnimation)
+        animatorSet.playTogether(positionAnimator, colorAnimation, alphaAnimation)
         animatorSet.start()
     }
 
@@ -375,6 +384,15 @@ open class CustomSwipeButton @JvmOverloads constructor(
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
 
+        val alphaAnimation = ValueAnimator.ofFloat(1F, 0F, 1F)
+        alphaAnimation.duration = animationDuration.toLong()
+        alphaAnimation.addUpdateListener {
+            if (alphaAnimation.animatedValue as Float <= 0.1) {
+                buttonSwipeNewTv.text = checkedText
+            }
+            buttonSwipeNewTv.alpha = alphaAnimation.animatedValue as Float
+        }
+
         animatorSet.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
@@ -387,7 +405,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         })
 
         positionAnimator.interpolator = AccelerateDecelerateInterpolator()
-        animatorSet.playTogether(positionAnimator, colorAnimation)
+        animatorSet.playTogether(positionAnimator, colorAnimation, alphaAnimation)
         animatorSet.start()
     }
 
@@ -644,8 +662,9 @@ open class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeView.background = checkedBackground
         slidingButtonIv.background = checkedToggleBackground
         slidingButtonIv.setImageDrawable(checkedIcon)
-        buttonSwipeNewTv.text = checkedText
-        buttonSwipeNewTv.text = checkedText
+        if (buttonSwipeNewTv.text != checkedText) {
+            buttonSwipeNewTv.text = checkedText
+        }
         buttonSwipeNewTv.textSize = textSize
         buttonSwipeNewTv.setTextColor(checkedTextColor)
     }
@@ -654,7 +673,9 @@ open class CustomSwipeButton @JvmOverloads constructor(
         buttonSwipeView.background = uncheckedBackground
         slidingButtonIv.background = uncheckedToggleBackground
         slidingButtonIv.setImageDrawable(uncheckedIcon)
-        buttonSwipeNewTv.text = uncheckedText
+        if (buttonSwipeNewTv.text != uncheckedText) {
+            buttonSwipeNewTv.text = uncheckedText
+        }
         buttonSwipeNewTv.textSize = textSize
         buttonSwipeNewTv.setTextColor(uncheckedTextColor)
     }
