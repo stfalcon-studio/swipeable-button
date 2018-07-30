@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.getDrawable(this, R.drawable.ic_pause_black)
 
         animateBtn.setOnClickListener {
-            customSwipeButton4.setSwipeButtonState(!customSwipeButton4.isChecked)
+            customSwipeButton4.setCheckedAnimated(!customSwipeButton4.isChecked)
         }
     }
 }

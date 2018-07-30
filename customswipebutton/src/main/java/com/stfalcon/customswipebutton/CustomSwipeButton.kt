@@ -20,7 +20,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
     companion object {
-        const val ANIMATION_DURATION = 200
+        private const val ANIMATION_DURATION = 200
     }
 
     private enum class StateChangeDirection { CHECKED_UNCHECKED, UNCHECKED_CHECKED }
@@ -30,7 +30,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
     var onSwipedOffListener: (() -> Unit)? = null
 
     /**
-     * Parameter for setting current state
+     * Current state
      * */
     var isChecked: Boolean = false
         set(isChecked) {
@@ -39,7 +39,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         }
 
     /**
-     * Option to enable click animation
+     * Enable click animation
      * */
     var isClickToSwipeEnable = true
         set(isClickToSwipeEnable) {
@@ -53,6 +53,9 @@ open class CustomSwipeButton @JvmOverloads constructor(
      * */
     var swipeProgressToFinish = 0.5
         set(swipeProgressToFinish) {
+            if (swipeProgressToFinish >=1 || swipeProgressToFinish <= 0) {
+                throw Throwable("Illegal value argument")
+            }
             field = swipeProgressToFinish
             updateState()
         }
@@ -63,6 +66,9 @@ open class CustomSwipeButton @JvmOverloads constructor(
      * */
     var swipeProgressToStart = 0.5
         set(swipeProgressToStart) {
+            if (swipeProgressToStart >=1 || swipeProgressToStart <= 0) {
+                throw Throwable("Illegal value argument")
+            }
             field = 1 - swipeProgressToStart
             updateState()
         }
@@ -162,7 +168,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
         }
 
     /**
-     * Parameter for setting the size of displaying text
+     * The size of displaying text
      * */
     var textSize: Float =
         context.resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
@@ -179,6 +185,17 @@ open class CustomSwipeButton @JvmOverloads constructor(
             field = isEnable
 
             updateEnableState()
+        }
+
+    /**
+     * Int value from. Time in ms. Duration of swipe animation.
+     * */
+    var animationDuration: Int = ANIMATION_DURATION
+        set(animationDuration) {
+            if (animationDuration < 0) {
+                throw Throwable("Illegal value argument")
+            }
+            field = animationDuration
         }
 
     private val onTouchListener = OnTouchListener { v, event ->
@@ -212,8 +229,9 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     /**
      * Setting current state of button with animation
+     * @param isChecked set button state
      * */
-    fun setSwipeButtonState(isChecked: Boolean) {
+    fun setCheckedAnimated(isChecked: Boolean) {
         if (isChecked) {
             animateToggleToEnd()
         } else {
@@ -273,6 +291,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
     private fun returnToggleToStart() {
         val animatorSet = AnimatorSet()
         val positionAnimator = ValueAnimator.ofFloat(slidingButtonIv.x, 0F)
+        positionAnimator.duration = animationDuration.toLong()
         positionAnimator.addUpdateListener {
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
@@ -289,6 +308,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
             slidingButtonIv.x,
             (buttonSwipeView.width - slidingButtonIv.width).toFloat()
         )
+        positionAnimator.duration = animationDuration.toLong()
         positionAnimator.addUpdateListener {
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
@@ -307,10 +327,11 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
         val colorAnimation =
             ValueAnimator.ofObject(ArgbEvaluator(), checkedTextColor, uncheckedTextColor)
-        colorAnimation.duration = ANIMATION_DURATION.toLong()
+        colorAnimation.duration = animationDuration.toLong()
         colorAnimation.addUpdateListener { animator -> buttonSwipeNewTv.setTextColor(animator.animatedValue as Int) }
 
         val positionAnimator = ValueAnimator.ofFloat(slidingButtonIv.x, 0F)
+        positionAnimator.duration = animationDuration.toLong()
         positionAnimator.addUpdateListener {
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
@@ -342,13 +363,14 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
         val colorAnimation =
             ValueAnimator.ofObject(ArgbEvaluator(), uncheckedTextColor, checkedTextColor)
-        colorAnimation.duration = ANIMATION_DURATION.toLong()
+        colorAnimation.duration = animationDuration.toLong()
         colorAnimation.addUpdateListener { animator -> buttonSwipeNewTv.setTextColor(animator.animatedValue as Int) }
 
         val positionAnimator = ValueAnimator.ofFloat(
             slidingButtonIv.x,
             (buttonSwipeView.width - slidingButtonIv.width).toFloat()
         )
+        positionAnimator.duration = animationDuration.toLong()
         positionAnimator.addUpdateListener {
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
@@ -422,6 +444,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     /**
      * Animation change button background
+     * @param direction set animation direction
      * */
     private fun animateBackgroundChange(direction: StateChangeDirection) {
         val backgrounds = arrayOfNulls<Drawable>(2)
@@ -436,11 +459,12 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
         val backgroundTransition = TransitionDrawable(backgrounds)
         buttonSwipeView.background = backgroundTransition
-        backgroundTransition.startTransition(ANIMATION_DURATION)
+        backgroundTransition.startTransition(animationDuration)
     }
 
     /**
      * Animation change toggle background
+     * @param direction set animation direction
      * */
     private fun animateToggleChange(direction: StateChangeDirection) {
         val backgrounds = arrayOfNulls<Drawable>(2)
@@ -455,9 +479,13 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
         val backgroundTransition = TransitionDrawable(backgrounds)
         slidingButtonIv.background = backgroundTransition
-        backgroundTransition.startTransition(ANIMATION_DURATION)
+        backgroundTransition.startTransition(animationDuration)
     }
 
+    /**
+     * Animation change toggle background
+     * @param event parameter with a new coordinate
+     * */
     private fun onButtonMove(event: MotionEvent) {
         val newCoordinates = slidingButtonIv.x + event.x
 
@@ -490,6 +518,7 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     /**
      * Parse attributes from xml
+     * @param attrs passed attributes from XML file
      * */
     private fun parseAttr(attrs: AttributeSet) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomSwipeButton)
@@ -602,6 +631,11 @@ open class CustomSwipeButton @JvmOverloads constructor(
         } else {
             context.resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
         }
+
+        animationDuration = typedArray.getInt(
+            R.styleable.CustomSwipeButton_durationAnimation,
+            animationDuration
+        )
 
         typedArray.recycle()
     }

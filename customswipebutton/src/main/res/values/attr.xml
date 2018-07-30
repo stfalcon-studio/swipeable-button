@@ -16,5 +16,6 @@
         <attr name="checkedBackground" format="reference" />
         <attr name="uncheckedBackground" format="reference" />
         <attr name="textSize" format="float|dimension" />
+        <attr name="durationAnimation" format="integer" />
     </declare-styleable>
 </resources>

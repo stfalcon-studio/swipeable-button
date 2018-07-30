@@ -56,6 +56,7 @@
         app:checkedBackground="@drawable/shape_sample_scrolling_view_checked"
         app:uncheckedBackground="@drawable/shape_sample_scrolling_view_unchecked"
         app:textSize="@dimen/custom_text_size"
+        app:durationAnimation="50"
         app:layout_constraintTop_toBottomOf="@+id/dividerContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
