@@ -1,3 +1,4 @@
+apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -27,6 +28,16 @@ android {
 ext {
     supportLibrariesVersion = '27.1.1'
     constraintLauoutVersion = '1.1.2'
+}
+
+publish {
+    groupId = 'com.github.stfalcon'
+    artifactId = 'swipeable-button'
+    publishVersion = '0.1.0'
+    desc = 'Library that helps with a few lines of code to use a swipeable button and customize it like you want.'
+    licences = ['Apache-2.0']
+    uploadName='Swipeable Button'
+    website = 'https://github.com/stfalcon-studio/swipeable-button.git'
 }
 
 dependencies {

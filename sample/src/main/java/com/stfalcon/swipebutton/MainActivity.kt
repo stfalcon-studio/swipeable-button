@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val TAG = "CustomSwipeButton"
+        const val TAG = "CustomSwipeableButton"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         customSwipeButton3.textSize =
                 resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
         customSwipeButton3.swipeProgressToFinish = 0.1
-        customSwipeButton3.swipeProgressToStart = 0.8
+        customSwipeButton3.swipeProgressToStart = 0.3
         customSwipeButton3.checkedTextColor = ContextCompat.getColor(
             this,
             R.color.checkedTextColor
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.getDrawable(this, R.drawable.ic_pause_black)
 
         animateBtn.setOnClickListener {
-            customSwipeButton4.setSwipeButtonState(!customSwipeButton4.isChecked)
+            customSwipeButton4.setCheckedAnimated(!customSwipeButton4.isChecked)
         }
     }
 }
