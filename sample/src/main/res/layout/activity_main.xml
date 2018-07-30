@@ -35,7 +35,7 @@
 
     </LinearLayout>
 
-    <com.stfalcon.customswipebutton.CustomSwipeButton
+    <com.stfalcon.customswipeablebutton.CustomSwipeableButton
         android:id="@+id/customSwipeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
 
     </LinearLayout>
 
-    <com.stfalcon.customswipebutton.CustomSwipeButton
+    <com.stfalcon.customswipeablebutton.CustomSwipeableButton
         android:id="@+id/customSwipeButton2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
 
     </LinearLayout>
 
-    <com.stfalcon.customswipebutton.CustomSwipeButton
+    <com.stfalcon.customswipeablebutton.CustomSwipeableButton
         android:id="@+id/customSwipeButton3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <com.stfalcon.customswipebutton.CustomSwipeButton
+    <com.stfalcon.customswipeablebutton.CustomSwipeableButton
         android:id="@+id/customSwipeButton4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val TAG = "CustomSwipeButton"
+        const val TAG = "CustomSwipeableButton"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
