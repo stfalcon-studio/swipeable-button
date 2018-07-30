@@ -7,7 +7,7 @@
     android:animateLayoutChanges="true">
 
     <View
-        android:id="@+id/buttonSwipeView"
+        android:id="@+id/buttonSwipeableView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="@+id/slidingButtonIv" />
 
     <TextView
-        android:id="@+id/buttonSwipeNewTv"
+        android:id="@+id/buttonSwipeableTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/default_padding"

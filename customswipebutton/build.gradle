@@ -34,7 +34,7 @@ publish {
     groupId = 'com.github.stfalcon'
     artifactId = 'swipeable-button'
     publishVersion = '0.1.0'
-    desc = 'Library that helps a few lines of code to use swipe button and customize it like you want.'
+    desc = 'Library that helps with a few lines of code to use a swipeable button and customize it like you want.'
     licences = ['Apache-2.0']
     uploadName='Swipeable Button'
     website = 'https://github.com/stfalcon-studio/swipeable-button.git'

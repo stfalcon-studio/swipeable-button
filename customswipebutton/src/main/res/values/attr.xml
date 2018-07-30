@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CustomSwipeButton">
+    <declare-styleable name="CustomSwipeableButton">
         <attr name="isChecked" format="boolean" />
         <attr name="isClickToSwipeEnable" format="boolean" />
         <attr name="swipeProgressToFinish" format="float" />
@@ -16,6 +16,6 @@
         <attr name="checkedBackground" format="reference" />
         <attr name="uncheckedBackground" format="reference" />
         <attr name="textSize" format="float|dimension" />
-        <attr name="durationAnimation" format="integer" />
+        <attr name="durationAnimation" format="float" />
     </declare-styleable>
 </resources>
