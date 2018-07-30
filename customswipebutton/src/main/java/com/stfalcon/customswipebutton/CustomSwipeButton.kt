@@ -49,12 +49,13 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     /**
      * Parameter for setting swipe border for change state
-     * from unchecked to checked
+     * from unchecked to checked.
+     * Value must be from 0 to 1.
      * */
     var swipeProgressToFinish = 0.5
         set(swipeProgressToFinish) {
             if (swipeProgressToFinish >= 1 || swipeProgressToFinish <= 0) {
-                throw Throwable("Illegal value argument")
+                throw Throwable("Illegal value argument. Available values from 0 to 1")
             }
             field = swipeProgressToFinish
             updateState()
@@ -62,12 +63,13 @@ open class CustomSwipeButton @JvmOverloads constructor(
 
     /**
      * Parameter for setting swipe border for change state
-     * from checked to unchecked
+     * from checked to unchecked.
+     * Value must be from 0 to 1.
      * */
     var swipeProgressToStart = 0.5
         set(swipeProgressToStart) {
             if (swipeProgressToStart >= 1 || swipeProgressToStart <= 0) {
-                throw Throwable("Illegal value argument")
+                throw Throwable("Illegal value argument. Available values from 0 to 1")
             }
             field = 1 - swipeProgressToStart
             updateState()
@@ -188,12 +190,13 @@ open class CustomSwipeButton @JvmOverloads constructor(
         }
 
     /**
-     * Int value from. Time in ms. Duration of swipe animation.
+     * Int value. Time in ms. Duration of swipe animation.
+     * Value must be greater than 0.
      * */
     var animationDuration: Int = ANIMATION_DURATION
         set(animationDuration) {
             if (animationDuration < 0) {
-                throw Throwable("Illegal value argument")
+                throw Throwable("Illegal value argument. Value must be greater than 0.")
             }
             field = animationDuration
         }
