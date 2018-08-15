@@ -12,62 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/default_margin">
-
-        <View
-            android:layout_width="16dp"
-            android:layout_height="1dp"
-            android:background="@android:color/background_dark"
-            android:layout_gravity="center_vertical"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:text="Set parameters using attributes"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:background="@android:color/background_dark"
-            android:layout_gravity="center_vertical"/>
-
-    </LinearLayout>
-
-    <com.stfalcon.customswipeablebutton.CustomSwipeableButton
-        android:id="@+id/customSwipeButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        app:isClickToSwipeEnable="false"
-        app:checkedText="@string/checked_state_text"
-        app:uncheckedText="@string/unchecked_state_text"
-        app:checkedTextColor="@color/checkedTextColor"
-        app:uncheckedTextColor="@color/uncheckedTextColor"
-        app:swipeProgressToFinish="0.3"
-        app:swipeProgressToStart="0.7"
-        app:checkedIcon="@drawable/ic_done_black"
-        app:uncheckedIcon="@drawable/ic_pause_black"
-        app:checkedToggleBackground="@drawable/shape_sample_checked_toggle"
-        app:uncheckedToggleBackground="@drawable/shape_sample_unchecked_toggle"
-        app:checkedBackground="@drawable/shape_sample_scrolling_view_checked"
-        app:uncheckedBackground="@drawable/shape_sample_scrolling_view_unchecked"
-        app:textSize="@dimen/custom_text_size"
-        app:durationAnimation="50"
-        app:layout_constraintTop_toBottomOf="@+id/dividerContainer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <LinearLayout
-        android:id="@+id/dividerContainer2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:paddingTop="@dimen/default_margin"
-        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton">
+        app:layout_constraintTop_toTopOf="parent">
 
         <View
             android:layout_width="16dp"
@@ -91,12 +37,67 @@
     </LinearLayout>
 
     <com.stfalcon.customswipeablebutton.CustomSwipeableButton
+        android:id="@+id/customSwipeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        app:layout_constraintTop_toBottomOf="@+id/dividerContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/dividerContainer2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/default_margin"
+        app:layout_constraintTop_toBottomOf="@+id/customSwipeButton">
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="1dp"
+            android:background="@android:color/background_dark"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:text="Set parameters using attributes"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:background="@android:color/background_dark"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <com.stfalcon.customswipeablebutton.CustomSwipeableButton
         android:id="@+id/customSwipeButton2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
+        app:isClickToSwipeEnable="false"
+        app:checkedText="@string/checked_state_text"
+        app:uncheckedText="@string/unchecked_state_text"
+        app:checkedTextColor="@color/checkedTextColor"
+        app:uncheckedTextColor="@color/uncheckedTextColor"
+        app:swipeProgressToFinish="0.3"
+        app:swipeProgressToStart="0.7"
+        app:checkedIcon="@drawable/ic_visible"
+        app:uncheckedIcon="@drawable/ic_usvisible"
+        app:checkedToggleBackground="@drawable/shape_sample_checked_toggle"
+        app:uncheckedToggleBackground="@drawable/shape_sample_unchecked_toggle"
+        app:checkedBackground="@drawable/shape_sample_scrolling_view_checked"
+        app:uncheckedBackground="@drawable/shape_sample_scrolling_view_unchecked"
+        app:textSize="12sp"
+        app:durationAnimation="250"
         app:layout_constraintTop_toBottomOf="@+id/dividerContainer2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
