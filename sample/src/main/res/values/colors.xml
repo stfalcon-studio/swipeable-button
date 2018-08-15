@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="checkedTextColor">#849dff</color>
-    <color name="uncheckedTextColor">#515151</color>
+    <color name="checkedTextColor">#EFFF9D</color>
+    <color name="uncheckedTextColor">#0D0B58</color>
+    <color name="checkedTextColor2">#D5F8E0</color>
+    <color name="uncheckedTextColor2">#37474F</color>
+    <color name="checkedTextColor3">#CBDBF5</color>
+    <color name="uncheckedTextColor3">#0D0B58</color>
 </resources>

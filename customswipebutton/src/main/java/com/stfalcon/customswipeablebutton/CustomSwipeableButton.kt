@@ -14,6 +14,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.button_swipe.view.*
 
+
 open class CustomSwipeableButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
@@ -339,11 +340,19 @@ open class CustomSwipeableButton @JvmOverloads constructor(
             slidingButtonIv.x = positionAnimator.animatedValue as Float
         }
 
+        val paddingAnimation = ValueAnimator.ofInt(0, slidingButtonIv.width)
+        paddingAnimation.duration = animationDuration
+        paddingAnimation.addUpdateListener {
+            buttonSwipeableTv.setPadding(it.animatedValue as Int, 0, 0, 0)
+        }
+
         val alphaAnimation = ValueAnimator.ofFloat(1F, 0F, 1F)
         alphaAnimation.duration = animationDuration
         alphaAnimation.addUpdateListener {
-            if (alphaAnimation.animatedValue as Float <= 0.1) {
-                buttonSwipeableTv.text = uncheckedText
+            if (it.animatedValue as Float <= 0.3) {
+                if (buttonSwipeableTv.text != uncheckedText) {
+                    buttonSwipeableTv.text = uncheckedText
+                }
             }
             buttonSwipeableTv.alpha = alphaAnimation.animatedValue as Float
         }
@@ -360,7 +369,7 @@ open class CustomSwipeableButton @JvmOverloads constructor(
         })
 
         positionAnimator.interpolator = AccelerateDecelerateInterpolator()
-        animatorSet.playTogether(positionAnimator, colorAnimation, alphaAnimation)
+        animatorSet.playTogether(positionAnimator, colorAnimation, alphaAnimation, paddingAnimation)
         animatorSet.start()
     }
 
@@ -390,10 +399,18 @@ open class CustomSwipeableButton @JvmOverloads constructor(
         val alphaAnimation = ValueAnimator.ofFloat(1F, 0F, 1F)
         alphaAnimation.duration = animationDuration
         alphaAnimation.addUpdateListener {
-            if (alphaAnimation.animatedValue as Float <= 0.1) {
-                buttonSwipeableTv.text = checkedText
+            if (it.animatedValue as Float <= 0.3) {
+                if (buttonSwipeableTv.text != checkedText) {
+                    buttonSwipeableTv.text = checkedText
+                }
             }
             buttonSwipeableTv.alpha = alphaAnimation.animatedValue as Float
+        }
+
+        val paddingAnimation = ValueAnimator.ofInt(0, slidingButtonIv.width)
+        paddingAnimation.duration = animationDuration
+        paddingAnimation.addUpdateListener {
+            buttonSwipeableTv.setPadding(0, 0, it.animatedValue as Int, 0)
         }
 
         animatorSet.addListener(object : AnimatorListenerAdapter() {
@@ -408,7 +425,7 @@ open class CustomSwipeableButton @JvmOverloads constructor(
         })
 
         positionAnimator.interpolator = AccelerateDecelerateInterpolator()
-        animatorSet.playTogether(positionAnimator, colorAnimation, alphaAnimation)
+        animatorSet.playTogether(positionAnimator, colorAnimation, alphaAnimation, paddingAnimation)
         animatorSet.start()
     }
 
