@@ -1,5 +1,17 @@
 <resources>
-    <string name="app_name">SwipeButton</string>
+    <string name="app_name">Swipeable Button</string>
     <string name="checked_state_text">Swipe to be visible</string>
     <string name="unchecked_state_text">Swipe to be unvisible</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="default_fragment_title">Default view</string>
+    <string name="default_fragment_description">Button with default styles</string>
+    <string name="attributes_fragment_title">Set parameters using attributes</string>
+    <string name="attributes_fragment_description">All parameters are set using xml</string>
+    <string name="programmatically_fragment_title">Programmatically set parameters</string>
+    <string name="programmatically_fragment_description">All parameters are sets programmatically</string>
+    <string name="animate_fragment_title">Programmatically animate</string>
+    <string name="animate_fragment_description">Call animation from the code</string>
+
 </resources>

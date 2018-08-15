@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CustomSwipeButton</string>
+    <string name="app_name">Swipeable Button</string>
     <string name="checked_text">Swipe to deactivate</string>
     <string name="unchecked_text">Swipe to activate</string>
 </resources>

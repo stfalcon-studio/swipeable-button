@@ -14,7 +14,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.button_swipe.view.*
 
-
 open class CustomSwipeableButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
@@ -207,6 +206,7 @@ open class CustomSwipeableButton @JvmOverloads constructor(
             MotionEvent.ACTION_DOWN -> return@OnTouchListener true
             MotionEvent.ACTION_MOVE -> {
                 onButtonMove(event)
+                this.parent.requestDisallowInterceptTouchEvent(true)
                 return@OnTouchListener true
             }
             MotionEvent.ACTION_UP -> {
@@ -269,9 +269,11 @@ open class CustomSwipeableButton @JvmOverloads constructor(
         if (this.isChecked) {
             setActivatedStyle()
             setToggleToEnd()
+            setTextStartTextPadding()
         } else {
             setDeactivatedStyle()
             setToggleToStart()
+            setTextEndTextPadding()
         }
     }
 
@@ -287,6 +289,20 @@ open class CustomSwipeableButton @JvmOverloads constructor(
      * */
     private fun setToggleToStart() {
         slidingButtonIv.x = 0F
+    }
+
+    /**
+     * Setting initial padding text in unchecked state
+     * */
+    private fun setTextStartTextPadding() {
+        buttonSwipeableTv.setPadding(0, 0, slidingButtonIv.width, 0)
+    }
+
+    /**
+     * Setting initial padding text in checked state
+     * */
+    private fun setTextEndTextPadding() {
+        buttonSwipeableTv.setPadding(slidingButtonIv.width, 0, 0, 0)
     }
 
     /**
