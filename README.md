@@ -11,10 +11,9 @@ Download via Gradle:
 ## Usage
 Just put this code into your layout:
 ```
-<com.stfalcon.customswipebutton.CustomSwipeButton
-   android:id="@+id/customSwipeButton"
-   android:layout_width="match_parent"
-   android:layout_height="wrap_content"/>
+<com.stfalcon.swipeablebutton.SwipeableButton
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
 ```
 
 You can use many attributes for more flexibility and convenience of use. Here's the full list:
@@ -61,26 +60,26 @@ For example:
 ```
 Also set them programmatically
 ```
-customSwipeButton.isChecked = true
-customSwipeButton.isEnable = true
-customSwipeButton.checkedText = "Checked text"
-customSwipeButton.uncheckedText = "Unchecked text"
-customSwipeButton.textSize = resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
-customSwipeButton.swipeProgressToFinish = 0.1
-customSwipeButton.swipeProgressToStart = 0.3
-customSwipeButton.checkedTextColor = ContextCompat.getColor(this,R.color.checkedTextColor)
-customSwipeButton.uncheckedTextColor = ContextCompat.getColor(this,R.color.uncheckedTextColor)
-customSwipeButton.checkedBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_checked)
-customSwipeButton.uncheckedBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_unchecked)
-customSwipeButton.checkedToggleBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_checked_toggle)
-customSwipeButton.uncheckedToggleBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_unchecked_toggle)
-customSwipeButton.checkedIcon = ContextCompat.getDrawable(this, R.drawable.ic_done_black)
-customSwipeButton.uncheckedIcon = ContextCompat.getDrawable(this, R.drawable.ic_pause_black)
+swipeableButton.isChecked = true
+swipeableButton.isEnable = true
+swipeableButton.checkedText = "Checked text"
+swipeableButton.uncheckedText = "Unchecked text"
+swipeableButton.textSize = resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
+swipeableButton.swipeProgressToFinish = 0.1
+swipeableButton.swipeProgressToStart = 0.3
+swipeableButton.checkedTextColor = ContextCompat.getColor(this,R.color.checkedTextColor)
+swipeableButton.uncheckedTextColor = ContextCompat.getColor(this,R.color.uncheckedTextColor)
+swipeableButton.checkedBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_checked)
+swipeableButton.uncheckedBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_unchecked)
+swipeableButton.checkedToggleBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_checked_toggle)
+swipeableButton.uncheckedToggleBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_unchecked_toggle)
+swipeableButton.checkedIcon = ContextCompat.getDrawable(this, R.drawable.ic_done_black)
+swipeableButton.uncheckedIcon = ContextCompat.getDrawable(this, R.drawable.ic_pause_black)
 ```
 If you want to change the state programmatically with animation you should use `setSwipeButtonState` method.
 ```
 animateBtn.setOnClickListener {
-   swipeButton.setSwipeButtonState(!customSwipeButton.isChecked)
+   swipeButton.setSwipeButtonState(!swipeableButton.isChecked)
 }
 ```
 If you want to get event from swipable-button you need to add next listeners:
@@ -90,6 +89,9 @@ If you want to get event from swipable-button you need to add next listeners:
 
 Let's take look a small sample:
 ```
+customSwipeButton.onSwipedListener = {
+   Log.d(TAG, "onSwiped")
+}
 customSwipeButton.onSwipedOnListener = {
    Log.d(TAG, "onSwipedOn")
 }
