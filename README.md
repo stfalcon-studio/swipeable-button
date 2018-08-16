@@ -36,30 +36,28 @@ You can use many attributes for more flexibility and convenience of use. Here's 
 
 For example:
 ```
-<com.stfalcon.customswipebutton.CustomSwipeButton
-   android:id="@+id/customSwipeButton"
-   android:layout_width="match_parent"
-   android:layout_height="wrap_content"
-   android:layout_marginTop="16dp"
-   android:layout_marginLeft="@dimen/default_margin"
-   android:layout_marginRight="@dimen/default_margin"
-   app:isClickToSwipeEnable="false"
-   app:checkedText="@string/checked_state_text"
-   app:uncheckedText="@string/unchecked_state_text"
-   app:checkedTextColor="@color/checkedTextColor"
-   app:uncheckedTextColor="@color/uncheckedTextColor"
-   app:swipeProgressToFinish="0.3"
-   app:swipeProgressToStart="0.7"
-   app:checkedIcon="@drawable/ic_done_black"
-   app:uncheckedIcon="@drawable/ic_pause_black"
-   app:checkedToggleBackground="@drawable/shape_sample_checked_toggle"
-   app:uncheckedToggleBackground="@drawable/shape_sample_unchecked_toggle"
-   app:checkedBackground="@drawable/shape_sample_scrolling_view_checked"
-   app:uncheckedBackground="@drawable/shape_sample_scrolling_view_unchecked"
-   app:textSize="@dimen/custom_text_size"
-   app:layout_constraintTop_toBottomOf="@+id/dividerContainer"
-   app:layout_constraintStart_toStartOf="parent"
-   app:layout_constraintEnd_toEndOf="parent"/>
+<com.stfalcon.swipeablebutton.SwipeableButton
+            android:id="@+id/customSwipeButton2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:checkedBackground="@drawable/shape_sample_scrolling_view_checked"
+            app:checkedIcon="@drawable/ic_visible"
+            app:checkedToggleBackground="@drawable/shape_sample_checked_toggle"
+            app:durationAnimation="250"
+            app:isClickToSwipeEnable="false"
+            app:thresholdEnd="0.3"
+            app:thresholdStart="0.7"
+            app:textChecked="@string/checked_state_text"
+            app:textColorChecked="@color/checkedTextColor"
+            app:textColorUnChecked="@color/uncheckedTextColor"
+            app:textSize="8sp"
+            app:textUnchecked="@string/unchecked_state_text"
+            app:uncheckedBackground="@drawable/shape_sample_scrolling_view_unchecked"
+            app:uncheckedIcon="@drawable/ic_usvisible"
+            app:uncheckedToggleBackground="@drawable/shape_sample_unchecked_toggle" />
 ```
 Also set them programmatically
 ```
