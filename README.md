@@ -9,8 +9,7 @@ Download via Gradle:
 ```implement 'com.github.stfalcon:'```
 
 ## Usage
-Just put this code in your layout file
-
+Just put this code into your layout:
 ```
 <com.stfalcon.customswipebutton.CustomSwipeButton
    android:id="@+id/customSwipeButton"
@@ -18,24 +17,24 @@ Just put this code in your layout file
    android:layout_height="wrap_content"/>
 ```
 
-You can use a many attributes for more flexibility and convenience of use. Here's the full list:
+You can use many attributes for more flexibility and convenience of use. Here's the full list:
 - isChecked - Initial state. Default state is unchecked.
-- isEnable - Is button enable. Default state is enabled.
-- checkedText - Text when button is checked
-- uncheckedText - Text when button is unchecked
+- isEnabled - Is button enabled. Boolean. True by default
+- checkedText - Text for checked state
+- uncheckedText - Text for unchecked state
 - textSize - Text size
-- swipeProgressToStart - Value [0..1] indicates how much you need to swipe to change status from unchecked to checked
-- swipeProgressToFinish - Value [0..1] indicates how much you need to swipe to change status from checked to unchecked
-- checkedTextColor - Text color when button is checked
-- uncheckedTextColor - Text color when button is unchecked
-- checkedBackground - Button background when button is checked.
-- uncheckedBackground - Button background when button is unchecked.
+- thresholdStart - Value in range [0..1] indicates how much user need to swipe to change status from unchecked to checked. 0.5 by default
+- thresholdEnd - Value in range [0..1] indicates how much user need to swipe to change status from checked to unchecked. 0.5 by default
+- textColorChecked - Text color when button is checked
+- textColorUnchecked - Text color when button is unchecked
+- checkedBackground - Button background for checked state.
+- uncheckedBackground - Button background for unchecked state.
 - checkedToggleBackground - Toggle background when button is checked.
 - uncheckedToggleBackground - Toggle background when button is unchecked.
 - checkedIcon - Toggle icon when button is checked
 - uncheckedIcon - Toggle icon when button is unchecked
 
-Also, we can transfer all parameters through the attributes in the xml file:
+For example:
 ```
 <com.stfalcon.customswipebutton.CustomSwipeButton
    android:id="@+id/customSwipeButton"
@@ -62,7 +61,7 @@ Also, we can transfer all parameters through the attributes in the xml file:
    app:layout_constraintStart_toStartOf="parent"
    app:layout_constraintEnd_toEndOf="parent"/>
 ```
-or you can set them programmatically
+Also set them programmatically
 ```
 customSwipeButton.isChecked = true
 customSwipeButton.isEnable = true
@@ -80,22 +79,19 @@ customSwipeButton.uncheckedToggleBackground = ContextCompat.getDrawable(this, R.
 customSwipeButton.checkedIcon = ContextCompat.getDrawable(this, R.drawable.ic_done_black)
 customSwipeButton.uncheckedIcon = ContextCompat.getDrawable(this, R.drawable.ic_pause_black)
 ```
-If you want programmatically change state of button with animation you should to use method `setSwipeButtonState`.
+If you want to change the state programmatically with animation you should use `setSwipeButtonState` method.
 ```
 animateBtn.setOnClickListener {
-   customSwipeButton.setSwipeButtonState(!customSwipeButton.isChecked)
+   swipeButton.setSwipeButtonState(!customSwipeButton.isChecked)
 }
 ```
-If you want to get event from swipe button you need add the next listeners:
+If you want to get event from swipable-button you need to add next listeners:
  - `onSwipedListener`
  - `onSwipedOnListener`
  - `onSwipedOffListener`
 
-Let's look small sample:
+Let's take look a small sample:
 ```
-customSwipeButton.onSwipedListener = {
-   Log.d(TAG, "onSwiped")
-}
 customSwipeButton.onSwipedOnListener = {
    Log.d(TAG, "onSwipedOn")
 }
