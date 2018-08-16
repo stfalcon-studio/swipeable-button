@@ -20,13 +20,13 @@ Just put this code into your layout:
 You can use many attributes for more flexibility and convenience of use. Here's the full list:
 - isChecked - Initial state. Default state is unchecked.
 - isEnabled - Is button enabled. Boolean. True by default
-- checkedText - Text for checked state
-- uncheckedText - Text for unchecked state
+- textChecked - Text for checked state
+- textUnchecked - Text for unchecked state
+- textColorChecked - Text color when button is checked
+- textColorUnchecked - Text color when button is unchecked
 - textSize - Text size
 - thresholdStart - Value in range [0..1] indicates how much user need to swipe to change status from unchecked to checked. 0.5 by default
 - thresholdEnd - Value in range [0..1] indicates how much user need to swipe to change status from checked to unchecked. 0.5 by default
-- textColorChecked - Text color when button is checked
-- textColorUnchecked - Text color when button is unchecked
 - checkedBackground - Button background for checked state.
 - uncheckedBackground - Button background for unchecked state.
 - checkedToggleBackground - Toggle background when button is checked.
