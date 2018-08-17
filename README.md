@@ -1,5 +1,5 @@
 # swipeable-button
-<img src="images/swipe.gif" width="240" height="420" />
+<img src="images/swipe_new.gif" width="240" height="420" />
 
 ## Who we are
 Need iOS and Android apps, MVP development or prototyping? Contact us via info@stfalcon.com. We develop software since 2009, and we're known experts in this field. Check out our [portfolio](https://stfalcon.com/en/portfolio) and see more libraries from [stfalcon-studio](https://stfalcon-studio.github.io/).
@@ -9,89 +9,85 @@ Download via Gradle:
 ```implement 'com.github.stfalcon:'```
 
 ## Usage
-Just put this code in your layout file
-
+Just put this code into your layout:
 ```
-<com.stfalcon.customswipebutton.CustomSwipeButton
-   android:id="@+id/customSwipeButton"
-   android:layout_width="match_parent"
-   android:layout_height="wrap_content"/>
+<com.stfalcon.swipeablebutton.SwipeableButton
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
 ```
 
-You can use a many attributes for more flexibility and convenience of use. Here's the full list:
-- isChecked - Initial state. Default state is unchecked.
-- isEnable - Is button enable. Default state is enabled.
-- checkedText - Text when button is checked
-- uncheckedText - Text when button is unchecked
+You can use many attributes for more flexibility and convenience of use. Here's the full list:
+- isChecked - Initial state. Boolean. False by default
+- isEnabled - Is button enabled. Boolean. True by default
+- textChecked - Text for checked state
+- textUnchecked - Text for unchecked state
+- textColorChecked - Text color when button is checked
+- textColorUnchecked - Text color when button is unchecked
 - textSize - Text size
-- swipeProgressToStart - Value [0..1] indicates how much you need to swipe to change status from unchecked to checked
-- swipeProgressToFinish - Value [0..1] indicates how much you need to swipe to change status from checked to unchecked
-- checkedTextColor - Text color when button is checked
-- uncheckedTextColor - Text color when button is unchecked
-- checkedBackground - Button background when button is checked.
-- uncheckedBackground - Button background when button is unchecked.
-- checkedToggleBackground - Toggle background when button is checked.
-- uncheckedToggleBackground - Toggle background when button is unchecked.
-- checkedIcon - Toggle icon when button is checked
-- uncheckedIcon - Toggle icon when button is unchecked
+- thresholdStart - Value in range [0..1] indicates how much user needs to swipe to change status from unchecked to checked. 0.5 by default
+- thresholdEnd - Value in range [0..1] indicates how much user needs to swipe to change status from checked to unchecked. 0.5 by default
+- checkedBackground - Button background drawable for checked state.
+- uncheckedBackground - Button background drawable for unchecked state.
+- checkedToggleBackground - Toggle background drawable when button is checked.
+- uncheckedToggleBackground - Toggle background drawable when button is unchecked.
+- checkedIcon - Toggle icon drawable when button is checked
+- uncheckedIcon - Toggle icon drawable when button is unchecked
 
-Also, we can transfer all parameters through the attributes in the xml file:
+For example:
 ```
-<com.stfalcon.customswipebutton.CustomSwipeButton
-   android:id="@+id/customSwipeButton"
-   android:layout_width="match_parent"
-   android:layout_height="wrap_content"
-   android:layout_marginTop="16dp"
-   android:layout_marginLeft="@dimen/default_margin"
-   android:layout_marginRight="@dimen/default_margin"
-   app:isClickToSwipeEnable="false"
-   app:checkedText="@string/checked_state_text"
-   app:uncheckedText="@string/unchecked_state_text"
-   app:checkedTextColor="@color/checkedTextColor"
-   app:uncheckedTextColor="@color/uncheckedTextColor"
-   app:swipeProgressToFinish="0.3"
-   app:swipeProgressToStart="0.7"
-   app:checkedIcon="@drawable/ic_done_black"
-   app:uncheckedIcon="@drawable/ic_pause_black"
-   app:checkedToggleBackground="@drawable/shape_sample_checked_toggle"
-   app:uncheckedToggleBackground="@drawable/shape_sample_unchecked_toggle"
-   app:checkedBackground="@drawable/shape_sample_scrolling_view_checked"
-   app:uncheckedBackground="@drawable/shape_sample_scrolling_view_unchecked"
-   app:textSize="@dimen/custom_text_size"
-   app:layout_constraintTop_toBottomOf="@+id/dividerContainer"
-   app:layout_constraintStart_toStartOf="parent"
-   app:layout_constraintEnd_toEndOf="parent"/>
+<com.stfalcon.swipeablebutton.SwipeableButton
+    android:id="@+id/customSwipeButton2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="64dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    app:checkedBackground="@drawable/shape_sample_scrolling_view_checked"
+    app:checkedIcon="@drawable/ic_visible"
+    app:checkedToggleBackground="@drawable/shape_sample_checked_toggle"
+    app:durationAnimation="250"
+    app:isClickToSwipeEnable="false"
+    app:thresholdEnd="0.3"
+    app:thresholdStart="0.7"
+    app:textChecked="@string/checked_state_text"
+    app:textColorChecked="@color/checkedTextColor"
+    app:textColorUnChecked="@color/uncheckedTextColor"
+    app:textSize="8sp"
+    app:textUnchecked="@string/unchecked_state_text"
+    app:uncheckedBackground="@drawable/shape_sample_scrolling_view_unchecked"
+    app:uncheckedIcon="@drawable/ic_usvisible"
+    app:uncheckedToggleBackground="@drawable/shape_sample_unchecked_toggle" />
 ```
-or you can set them programmatically
+Also you can set them programmatically:
 ```
-customSwipeButton.isChecked = true
-customSwipeButton.isEnable = true
-customSwipeButton.checkedText = "Checked text"
-customSwipeButton.uncheckedText = "Unchecked text"
-customSwipeButton.textSize = resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
-customSwipeButton.swipeProgressToFinish = 0.1
-customSwipeButton.swipeProgressToStart = 0.3
-customSwipeButton.checkedTextColor = ContextCompat.getColor(this,R.color.checkedTextColor)
-customSwipeButton.uncheckedTextColor = ContextCompat.getColor(this,R.color.uncheckedTextColor)
-customSwipeButton.checkedBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_checked)
-customSwipeButton.uncheckedBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_unchecked)
-customSwipeButton.checkedToggleBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_checked_toggle)
-customSwipeButton.uncheckedToggleBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_unchecked_toggle)
-customSwipeButton.checkedIcon = ContextCompat.getDrawable(this, R.drawable.ic_done_black)
-customSwipeButton.uncheckedIcon = ContextCompat.getDrawable(this, R.drawable.ic_pause_black)
+swipeableButton.isChecked = true
+swipeableButton.isEnable = true
+swipeableButton.checkedText = "Checked text"
+swipeableButton.uncheckedText = "Unchecked text"
+swipeableButton.textSize = resources.getDimensionPixelSize(R.dimen.default_text_size).toFloat()
+swipeableButton.swipeProgressToFinish = 0.1
+swipeableButton.swipeProgressToStart = 0.3
+swipeableButton.checkedTextColor = ContextCompat.getColor(this,R.color.checkedTextColor)
+swipeableButton.uncheckedTextColor = ContextCompat.getColor(this,R.color.uncheckedTextColor)
+swipeableButton.checkedBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_checked)
+swipeableButton.uncheckedBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_scrolling_view_unchecked)
+swipeableButton.checkedToggleBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_checked_toggle)
+swipeableButton.uncheckedToggleBackground = ContextCompat.getDrawable(this, R.drawable.shape_sample_unchecked_toggle)
+swipeableButton.checkedIcon = ContextCompat.getDrawable(this, R.drawable.ic_done_black)
+swipeableButton.uncheckedIcon = ContextCompat.getDrawable(this, R.drawable.ic_pause_black)
 ```
-If you want programmatically change state of button with animation you should to use method `setSwipeButtonState`.
+If you want to change the state programmatically with animation you should use `setSwipeButtonState` method:
 ```
 animateBtn.setOnClickListener {
-   customSwipeButton.setSwipeButtonState(!customSwipeButton.isChecked)
+   swipeButton.setSwipeButtonState(!swipeableButton.isChecked)
 }
 ```
-If you want to get event from swipe button you need add the next listeners:
+If you want to get event from swipable-button you need to add next listeners:
  - `onSwipedListener`
  - `onSwipedOnListener`
  - `onSwipedOffListener`
 
-Let's look small sample:
+Let's take look a small sample:
 ```
 customSwipeButton.onSwipedListener = {
    Log.d(TAG, "onSwiped")
