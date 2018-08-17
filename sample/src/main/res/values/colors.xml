@@ -12,5 +12,5 @@
     <color name="uncheckedTextColor3">#0D0B58</color>
 
     <color name="uncheckedIndicator">#afd6d6d6</color>
-    <color name="checkedIndicator">#f5f5f5</color>
+    <color name="checkedIndicator">#1e2a78</color>
 </resources>
