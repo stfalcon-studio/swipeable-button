@@ -24,14 +24,14 @@ You can use many attributes for more flexibility and convenience of use. Here's 
 - textColorChecked - Text color when button is checked
 - textColorUnchecked - Text color when button is unchecked
 - textSize - Text size
-- thresholdStart - Value in range [0..1] indicates how much user need to swipe to change status from unchecked to checked. 0.5 by default
-- thresholdEnd - Value in range [0..1] indicates how much user need to swipe to change status from checked to unchecked. 0.5 by default
-- checkedBackground - Button background for checked state.
-- uncheckedBackground - Button background for unchecked state.
-- checkedToggleBackground - Toggle background when button is checked.
-- uncheckedToggleBackground - Toggle background when button is unchecked.
-- checkedIcon - Toggle icon when button is checked
-- uncheckedIcon - Toggle icon when button is unchecked
+- thresholdStart - Value in range [0..1] indicates how much user needs to swipe to change status from unchecked to checked. 0.5 by default
+- thresholdEnd - Value in range [0..1] indicates how much user needs to swipe to change status from checked to unchecked. 0.5 by default
+- checkedBackground - Button background drawable for checked state.
+- uncheckedBackground - Button background drawable for unchecked state.
+- checkedToggleBackground - Toggle background drawable when button is checked.
+- uncheckedToggleBackground - Toggle background drawable when button is unchecked.
+- checkedIcon - Toggle icon drawable when button is checked
+- uncheckedIcon - Toggle icon drawable when button is unchecked
 
 For example:
 ```
@@ -58,7 +58,7 @@ For example:
     app:uncheckedIcon="@drawable/ic_usvisible"
     app:uncheckedToggleBackground="@drawable/shape_sample_unchecked_toggle" />
 ```
-Also set them programmatically
+Also you can set them programmatically:
 ```
 swipeableButton.isChecked = true
 swipeableButton.isEnable = true
@@ -76,7 +76,7 @@ swipeableButton.uncheckedToggleBackground = ContextCompat.getDrawable(this, R.dr
 swipeableButton.checkedIcon = ContextCompat.getDrawable(this, R.drawable.ic_done_black)
 swipeableButton.uncheckedIcon = ContextCompat.getDrawable(this, R.drawable.ic_pause_black)
 ```
-If you want to change the state programmatically with animation you should use `setSwipeButtonState` method.
+If you want to change the state programmatically with animation you should use `setSwipeButtonState` method:
 ```
 animateBtn.setOnClickListener {
    swipeButton.setSwipeButtonState(!swipeableButton.isChecked)
