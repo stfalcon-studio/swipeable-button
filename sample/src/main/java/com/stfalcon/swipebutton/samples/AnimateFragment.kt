@@ -29,7 +29,7 @@ class AnimateFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         customSwipeButton4.isChecked = true
-        customSwipeButton4.isEnable = true
+        customSwipeButton4.isEnabled = true
         customSwipeButton4.checkedText = "Swipe to unchecked"
         customSwipeButton4.uncheckedText = "Swipe to checked"
         customSwipeButton4.textSize =

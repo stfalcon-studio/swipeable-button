@@ -13,22 +13,32 @@
         android:layout_marginBottom="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:background="@android:color/white">
+        android:background="@drawable/shape_fragment_background">
 
-        <TextView
-            android:id="@+id/titleDefaultTv"
+        <FrameLayout
+            android:id="@+id/titleAnimateContainer"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:gravity="center_horizontal"
-            android:text="@string/default_fragment_title"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="90dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/titleDefaultTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:text="@string/default_fragment_title"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/descriptionDefaultTv"
@@ -39,17 +49,17 @@
             android:layout_marginRight="16dp"
             android:gravity="center_horizontal"
             android:text="@string/default_fragment_description"
-            app:layout_constraintTop_toBottomOf="@+id/titleDefaultTv"
+            app:layout_constraintTop_toBottomOf="@+id/titleAnimateContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.stfalcon.customswipeablebutton.CustomSwipeableButton
+        <com.stfalcon.swipeablebutton.SwipeableButton
             android:id="@+id/customSwipeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginBottom="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="64dp"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>

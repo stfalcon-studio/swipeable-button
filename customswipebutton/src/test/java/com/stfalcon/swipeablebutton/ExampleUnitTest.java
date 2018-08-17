@@ -1,4 +1,4 @@
-package com.stfalcon.customswipeablebutton;
+package com.stfalcon.swipeablebutton;
 
 import org.junit.Test;
 
