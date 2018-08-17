@@ -29,7 +29,7 @@ class ProgrammaticallyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         customSwipeButton3.isChecked = true
-        customSwipeButton3.isEnable = true
+        customSwipeButton3.isEnabled = true
         customSwipeButton3.checkedText = "Swipe to unlock"
         customSwipeButton3.uncheckedText = "Swipe to lock"
         customSwipeButton3.textSize =

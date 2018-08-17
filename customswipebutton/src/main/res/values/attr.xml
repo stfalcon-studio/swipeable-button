@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CustomSwipeableButton">
+    <declare-styleable name="SwipeableButton">
         <attr name="isChecked" format="boolean" />
         <attr name="isClickToSwipeEnable" format="boolean" />
-        <attr name="swipeProgressToFinish" format="float" />
-        <attr name="swipeProgressToStart" format="float" />
-        <attr name="checkedText" format="string|reference" />
-        <attr name="uncheckedText" format="string|reference" />
-        <attr name="checkedTextColor" format="integer|reference" />
-        <attr name="uncheckedTextColor" format="integer|reference" />
+        <attr name="thresholdEnd" format="float" />
+        <attr name="thresholdStart" format="float" />
+        <attr name="textChecked" format="string|reference" />
+        <attr name="textUnchecked" format="string|reference" />
+        <attr name="textSize" format="float|dimension" />
+        <attr name="textColorChecked" format="integer|reference" />
+        <attr name="textColorUnChecked" format="integer|reference" />
         <attr name="checkedIcon" format="reference" />
         <attr name="uncheckedIcon" format="reference" />
         <attr name="checkedToggleBackground" format="reference" />
         <attr name="uncheckedToggleBackground" format="reference" />
         <attr name="checkedBackground" format="reference" />
         <attr name="uncheckedBackground" format="reference" />
-        <attr name="textSize" format="float|dimension" />
         <attr name="durationAnimation" format="float" />
     </declare-styleable>
 </resources>

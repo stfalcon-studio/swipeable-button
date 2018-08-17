@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorPrimary"
+    android:orientation="vertical"
     tools:context=".samples.AttributesFragment">
 
     <android.support.constraint.ConstraintLayout
@@ -14,59 +14,68 @@
         android:layout_marginBottom="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:background="@android:color/white">
+        android:background="@drawable/shape_fragment_background">
 
-        <TextView
-            android:id="@+id/titleAttributesTv"
+        <FrameLayout
+            android:id="@+id/titleAnimateContainer"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:gravity="center_horizontal"
-            android:text="@string/attributes_fragment_title"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="90dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/titleAttributesTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="3"
+                android:text="@string/attributes_fragment_title"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/descriptionAttributesTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
-            android:text="@string/animate_fragment_description"
-            app:layout_constraintTop_toBottomOf="@+id/titleAttributesTv"
+            android:text="@string/attributes_fragment_description"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/titleAnimateContainer" />
 
-        <com.stfalcon.customswipeablebutton.CustomSwipeableButton
+        <com.stfalcon.swipeablebutton.SwipeableButton
             android:id="@+id/customSwipeButton2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="64dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:checkedBackground="@drawable/shape_sample_scrolling_view_checked"
             app:checkedIcon="@drawable/ic_visible"
-            app:checkedText="@string/checked_state_text"
-            app:checkedTextColor="@color/checkedTextColor"
             app:checkedToggleBackground="@drawable/shape_sample_checked_toggle"
             app:durationAnimation="250"
             app:isClickToSwipeEnable="false"
-            app:swipeProgressToFinish="0.3"
-            app:swipeProgressToStart="0.7"
+            app:thresholdEnd="0.3"
+            app:thresholdStart="0.7"
+            app:textChecked="@string/checked_state_text"
+            app:textColorChecked="@color/checkedTextColor"
+            app:textColorUnChecked="@color/uncheckedTextColor"
             app:textSize="8sp"
+            app:textUnchecked="@string/unchecked_state_text"
             app:uncheckedBackground="@drawable/shape_sample_scrolling_view_unchecked"
             app:uncheckedIcon="@drawable/ic_usvisible"
-            app:uncheckedText="@string/unchecked_state_text"
-            app:uncheckedTextColor="@color/uncheckedTextColor"
-            app:uncheckedToggleBackground="@drawable/shape_sample_unchecked_toggle"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:uncheckedToggleBackground="@drawable/shape_sample_unchecked_toggle" />
 
 
     </android.support.constraint.ConstraintLayout>
