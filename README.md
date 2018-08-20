@@ -6,7 +6,7 @@ Need iOS and Android apps, MVP development or prototyping? Contact us via info@s
 
 ## Download
 Download via Gradle:
-```implement 'com.github.stfalcon:swipeable-button:0.1.0'```
+```compile 'com.github.stfalcon:swipeable-button:0.1.0'```
 
 ## Usage
 Just put this code into your layout:
