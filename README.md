@@ -7,6 +7,7 @@ Need iOS and Android apps, MVP development or prototyping? Contact us via info@s
 ## Download
 Download via Gradle:
 ```compile 'com.github.stfalcon:swipeable-button:0.1.1'```
+
 0.1.1 - added androidx support
 
 ## Usage
